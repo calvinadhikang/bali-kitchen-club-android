@@ -36,6 +36,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.balikitchenclub.screens.master.menu.AddMenuScreen
 import com.example.balikitchenclub.screens.master.menu.DetailMenuScreen
 import com.example.balikitchenclub.screens.master.menu.MenuScreen
+import com.example.balikitchenclub.screens.master.sesi.AddSesiScreen
 import com.example.balikitchenclub.screens.master.sesi.SesiScreen
 import com.example.balikitchenclub.ui.theme.BaliKitchenClubTheme
 import kotlinx.coroutines.launch
@@ -106,6 +107,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     composable("menu-add"){ AddMenuScreen(navController) }
                     composable("menu-detail/{menuId}") { backStackEntry -> DetailMenuScreen(navController = navController, id = backStackEntry.arguments?.getString("menuId")) }
                     composable("sesi"){ SesiScreen(navController = navController) }
+                    composable("sesi-add"){ AddSesiScreen(navController = navController) }
                 }
             }
         }

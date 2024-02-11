@@ -34,7 +34,7 @@ fun SesiScreen(navController: NavController, viewModel: SesiViewModel = androidx
         LazyColumn(){
             items(items = sesis, key = { item -> item.id }){sesi ->
                 Column(
-                    modifier = Modifier.clickable { navController.navigate("menu-detail/${sesi.id}") }
+                    modifier = Modifier.clickable { navController.navigate("sesi-detail/${sesi.id}") }
                 ) {
                     Text(sesi.name)
                     HorizontalDivider()

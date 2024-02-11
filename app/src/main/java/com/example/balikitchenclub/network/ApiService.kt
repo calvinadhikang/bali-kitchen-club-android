@@ -3,6 +3,7 @@ package com.example.balikitchenclub.network
 import com.example.balikitchenclub.network.dro.MenuResponseItem
 import com.example.balikitchenclub.network.dro.SesiResponseItem
 import com.example.balikitchenclub.network.dto.CreateMenuDto
+import com.example.balikitchenclub.network.dto.CreateSesiDto
 import com.example.balikitchenclub.network.dto.UpdateMenuDto
 import retrofit2.Response
 import retrofit2.http.Body
@@ -36,4 +37,9 @@ interface ApiService {
 
     @GET("sesi")
     suspend fun getAllSesi(): Response<List<SesiResponseItem>>
+
+    @POST("sesi")
+    suspend fun createSesi(
+        @Body() createSesiDto: CreateSesiDto
+    ): Response<SesiResponseItem>
 }
