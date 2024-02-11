@@ -65,7 +65,7 @@ class MenuScreenViewModel : ViewModel(){
         }
     }
 
-    fun createMenu(menuName: String, menuPrice: Int){
+    fun createMenu(menuName: String, menuPrice: Int, context: Context){
         viewModelScope.launch {
             val api = ApiClient.apiService
             val response = withContext(Dispatchers.IO){
@@ -73,7 +73,7 @@ class MenuScreenViewModel : ViewModel(){
             }
 
             if (response.isSuccessful){
-                Log.e("CREATED", response.body().toString())
+                Toast.makeText(context, "Berhasil Tambah Menu", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -32,14 +32,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.balikitchenclub.utils.checkDigitInput
 
 @Composable
-fun AddMenuScreen(navController: NavController){
-    val viewModel = MenuScreenViewModel()
+fun AddMenuScreen(
+    navController: NavController,
+    viewModel: MenuScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+){
+    val context = LocalContext.current
     var name by rememberSaveable { mutableStateOf("") }
     var price by rememberSaveable { mutableStateOf(0) }
 
@@ -57,7 +61,7 @@ fun AddMenuScreen(navController: NavController){
         }
         OutlinedTextField(value = name, onValueChange = { newValue -> name = newValue }, label = { Text("Nama") })
         OutlinedTextField(value = price.toString(), onValueChange = { newValue -> price = checkDigitInput(newValue) }, label = { Text("Harga") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
-        Button(onClick = { viewModel.createMenu(name, price) }) {
+        Button(onClick = { viewModel.createMenu(name, price, context) }) {
             Text("Tambah")
         }
         Spacer(modifier = Modifier.weight(1F))
