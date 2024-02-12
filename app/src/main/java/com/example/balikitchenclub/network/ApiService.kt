@@ -38,6 +38,9 @@ interface ApiService {
     @GET("sesi")
     suspend fun getAllSesi(): Response<List<SesiResponseItem>>
 
+    @GET("sesi/now")
+    suspend fun getSesiNow(): Response<SesiResponseItem>
+
     @POST("sesi")
     suspend fun createSesi(
         @Body() createSesiDto: CreateSesiDto

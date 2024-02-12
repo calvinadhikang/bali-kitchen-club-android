@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,12 +22,15 @@ import androidx.navigation.NavController
 @Composable()
 fun SesiScreen(navController: NavController, viewModel: SesiViewModel = androidx.lifecycle.viewmodel.compose.viewModel()){
     val sesis by viewModel.sesis.observeAsState(emptyList())
+    val sesiNow by viewModel.sesiNow.observeAsState()
 
     LaunchedEffect(Unit){
         viewModel.getAllSesi()
+        viewModel.getSesiNow()
     }
 
     Column {
+        Text("Sesi Sekarang : ${sesiNow?.name}")
         Row(Modifier.padding(bottom = 16.dp)) {
             Text("List Sesi", modifier = Modifier.weight(1F))
             Text("Tambah Sesi", modifier = Modifier.clickable{ navController.navigate("sesi-add") }, color = Color.Blue)
@@ -34,12 +38,14 @@ fun SesiScreen(navController: NavController, viewModel: SesiViewModel = androidx
         LazyColumn(){
             items(items = sesis, key = { item -> item.id }){sesi ->
                 Column(
-                    modifier = Modifier.clickable { navController.navigate("sesi-detail/${sesi.id}") }
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { navController.navigate("sesi-detail/${sesi.id}") }
+                        .padding(top = 4.dp, bottom = 4.dp),
                 ) {
                     Text(sesi.name)
-                    HorizontalDivider()
-                    Spacer(modifier = Modifier.padding(4.dp))
                 }
+                HorizontalDivider()
             }
         }
         Text("Total Data ${sesis!!.size}")

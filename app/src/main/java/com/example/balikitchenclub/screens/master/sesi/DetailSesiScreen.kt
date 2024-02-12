@@ -51,14 +51,18 @@ import com.example.balikitchenclub.utils.checkDigitInput
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddSesiScreen(
+fun DetailSesiScreen(
     navController: NavController,
-    viewModel: SesiViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    id: String?,
+    viewModel: SesiViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ){
     val context = LocalContext.current
-    var name by rememberSaveable { mutableStateOf("") }
-    var startTime = rememberTimePickerState(11, 30, true)
-    var endTime = rememberTimePickerState(11, 30, true)
+    var startTime = rememberTimePickerState(viewModel.detailStartHour, viewModel.detailStartMinute, true)
+    var endTime = rememberTimePickerState(viewModel.detailEndHour, viewModel.detailEndMinute, true)
+
+    LaunchedEffect(Unit){
+        viewModel.getDetailSesi(id!!)
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -77,7 +81,7 @@ fun AddSesiScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             item {
-                OutlinedTextField(value = name, onValueChange = { newValue -> name = newValue }, label = { Text("Nama") })
+                OutlinedTextField(value = viewModel.detailSesiName, onValueChange = { newValue -> viewModel.detailSesiName = newValue }, label = { Text("Nama") })
                 Spacer(modifier = Modifier.padding(10.dp))
                 Text("Waktu Mulai : ${startTime.hour}:${startTime.minute}")
                 TimePicker(state = startTime)
@@ -87,7 +91,7 @@ fun AddSesiScreen(
                 TimePicker(state = endTime)
 
                 Spacer(modifier = Modifier.padding(10.dp))
-                Button(onClick = { viewModel.createSesi(name, startTime.hour.toString(), startTime.minute.toString(), endTime.hour.toString(), endTime.minute.toString(), context) }) {
+                Button(onClick = { viewModel.createSesi(viewModel.detailSesiName, startTime.hour.toString(), startTime.minute.toString(), endTime.hour.toString(), endTime.minute.toString(), context) }) {
                     Text("Tambah")
                 }
             }
