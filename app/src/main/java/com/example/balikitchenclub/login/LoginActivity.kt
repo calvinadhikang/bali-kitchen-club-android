@@ -78,7 +78,9 @@ fun Greeting(modifier: Modifier = Modifier) {
         )
         Button(
             onClick = {
-                context.startActivity(Intent(context, MainActivity::class.java))
+                val intent = Intent(context, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                context.startActivity(intent)
             },
             content = {
                 Text("Login")
