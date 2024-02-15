@@ -12,9 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +28,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +46,8 @@ import com.example.balikitchenclub.screens.master.menu.MenuScreen
 import com.example.balikitchenclub.screens.master.sesi.AddSesiScreen
 import com.example.balikitchenclub.screens.master.sesi.DetailSesiScreen
 import com.example.balikitchenclub.screens.master.sesi.SesiScreen
+import com.example.balikitchenclub.screens.transaction.AddTransactionScreen
+import com.example.balikitchenclub.screens.transaction.TransactionScreen
 import com.example.balikitchenclub.ui.theme.BaliKitchenClubTheme
 import kotlinx.coroutines.launch
 
@@ -70,17 +79,27 @@ fun MainScreen(modifier: Modifier = Modifier) {
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                DrawerContent(navController) {
-                    scope.launch {
-                        drawerState.apply {
-                            if (isClosed) open() else close()
+                DrawerContent(
+                    navController = navController,
+                    closeDrawer = {
+                        scope.launch {
+                            drawerState.apply {
+                                if (isClosed) open() else close()
+                            }
                         }
                     }
-                }
+                )
             }
         }
     ) {
         Scaffold(
+            floatingActionButton = {
+                FloatingActionButton(onClick = {
+                    navController.navigate("transaction-add")
+                }) {
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "")
+                }
+            }
         ) { contentPadding ->
             Column(
                 modifier = Modifier
@@ -91,6 +110,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Start
                 ){
+                    IconButton(onClick = {
+                        scope.launch {
+                            navController.navigateUp()
+                        }
+                    }) {
+                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                    Spacer(Modifier.weight(1F))
                     IconButton(onClick = {
                         scope.launch {
                             drawerState.apply {
@@ -105,11 +132,13 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 NavHost(navController, startDestination = "home"){
                     composable("home"){ Text("Home") }
                     composable("menu"){ MenuScreen(navController = navController) }
-                    composable("menu-add"){ AddMenuScreen(navController) }
-                    composable("menu-detail/{menuId}") { backStackEntry -> DetailMenuScreen(navController = navController, id = backStackEntry.arguments?.getString("menuId")) }
+                    composable("menu-add"){ AddMenuScreen() }
+                    composable("menu-detail/{menuId}") { backStackEntry -> DetailMenuScreen(id = backStackEntry.arguments?.getString("menuId")) }
                     composable("sesi"){ SesiScreen(navController = navController) }
-                    composable("sesi-add"){ AddSesiScreen(navController = navController) }
-                    composable("sesi-detail/{sesiId}"){ backStackEntry -> DetailSesiScreen(navController = navController, id = backStackEntry.arguments?.getString("sesiId")) }
+                    composable("sesi-add"){ AddSesiScreen() }
+                    composable("sesi-detail/{sesiId}"){ backStackEntry -> DetailSesiScreen(id = backStackEntry.arguments?.getString("sesiId")) }
+                    composable("transaction") { TransactionScreen() }
+                    composable("transaction-add") { AddTransactionScreen() }
                 }
             }
         }
@@ -140,6 +169,12 @@ fun DrawerContent(navController: NavController, closeDrawer: () -> Unit){
             .fillMaxWidth()
             .clickable {
                 navController.navigate("sesi")
+                closeDrawer()
+            })
+        Text("Transaksi", modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                navController.navigate("transaction")
                 closeDrawer()
             })
     }

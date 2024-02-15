@@ -52,47 +52,49 @@ import com.example.balikitchenclub.utils.checkDigitInput
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailSesiScreen(
-    navController: NavController,
     id: String?,
     viewModel: SesiViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
 ){
     val context = LocalContext.current
+    var loaded = mutableStateOf(false)
     var startTime = rememberTimePickerState(viewModel.detailStartHour, viewModel.detailStartMinute, true)
     var endTime = rememberTimePickerState(viewModel.detailEndHour, viewModel.detailEndMinute, true)
 
+    if (viewModel.detailSesiName != ""){
+        startTime = rememberTimePickerState(viewModel.detailStartHour, viewModel.detailStartMinute, true)
+        endTime = rememberTimePickerState(viewModel.detailEndHour, viewModel.detailEndMinute, true)
+    }
+
     LaunchedEffect(Unit){
         viewModel.getDetailSesi(id!!)
+        loaded.value = true
     }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ){
         Box(Modifier.fillMaxWidth()){
-            IconButton(
-                onClick = { navController.navigateUp() },
-                modifier = Modifier.align(Alignment.CenterStart)
-            ){
-                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
-            }
             Text("Tambah Menu", modifier = Modifier.align(Alignment.Center))
         }
-        LazyColumn(
-            Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            item {
-                OutlinedTextField(value = viewModel.detailSesiName, onValueChange = { newValue -> viewModel.detailSesiName = newValue }, label = { Text("Nama") })
-                Spacer(modifier = Modifier.padding(10.dp))
-                Text("Waktu Mulai : ${startTime.hour}:${startTime.minute}")
-                TimePicker(state = startTime)
+        if (viewModel.detailSesiName != ""){
+            LazyColumn(
+                Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                item {
+                    OutlinedTextField(value = viewModel.detailSesiName, onValueChange = { newValue -> viewModel.detailSesiName = newValue }, label = { Text("Nama") })
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    Text("Waktu Mulai : ${viewModel.detailStartHour}:${viewModel.detailStartMinute}")
+                    TimePicker(state = startTime)
 
-                Spacer(modifier = Modifier.padding(10.dp))
-                Text("Waktu Berakhir : ${endTime.hour}:${endTime.minute}")
-                TimePicker(state = endTime)
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    Text("Waktu Berakhir : ${viewModel.detailEndHour}:${viewModel.detailEndMinute}")
+                    TimePicker(state = endTime)
 
-                Spacer(modifier = Modifier.padding(10.dp))
-                Button(onClick = { viewModel.createSesi(viewModel.detailSesiName, startTime.hour.toString(), startTime.minute.toString(), endTime.hour.toString(), endTime.minute.toString(), context) }) {
-                    Text("Tambah")
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    Button(onClick = { viewModel.createSesi(viewModel.detailSesiName, startTime.hour.toString(), startTime.minute.toString(), endTime.hour.toString(), endTime.minute.toString(), context) }) {
+                        Text("Tambah")
+                    }
                 }
             }
         }

@@ -52,7 +52,6 @@ import com.example.balikitchenclub.utils.checkDigitInput
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddSesiScreen(
-    navController: NavController,
     viewModel: SesiViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ){
     val context = LocalContext.current
@@ -64,12 +63,6 @@ fun AddSesiScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ){
         Box(Modifier.fillMaxWidth()){
-            IconButton(
-                onClick = { navController.navigateUp() },
-                modifier = Modifier.align(Alignment.CenterStart)
-            ){
-                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
-            }
             Text("Tambah Menu", modifier = Modifier.align(Alignment.Center))
         }
         LazyColumn(

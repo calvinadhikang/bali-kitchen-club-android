@@ -89,6 +89,24 @@ class SesiViewModel : ViewModel(){
     }
 
     fun getDetailSesi(id: String){
+        viewModelScope.launch {
+            val api = ApiClient.apiService
+            val response = withContext(Dispatchers.IO){
+                api.getDetailSesi(id.toInt())
+            }
 
+            if (response.isSuccessful){
+                val result = response.body()!!
+                detailSesiName = result.name
+
+                var start = result.start.split(":")
+                detailStartHour = start[0].toInt()
+                detailStartMinute = start[1].toInt()
+
+                var end = result.end.split(":")
+                detailEndHour = end[0].toInt()
+                detailEndMinute = end[1].toInt()
+            }
+        }
     }
 }

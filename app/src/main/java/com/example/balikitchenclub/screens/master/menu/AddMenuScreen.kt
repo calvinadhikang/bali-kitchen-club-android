@@ -40,7 +40,6 @@ import com.example.balikitchenclub.utils.checkDigitInput
 
 @Composable
 fun AddMenuScreen(
-    navController: NavController,
     viewModel: MenuScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ){
     val context = LocalContext.current
@@ -51,16 +50,10 @@ fun AddMenuScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ){
         Box(Modifier.fillMaxWidth()){
-            IconButton(
-                onClick = { navController.navigateUp() },
-                modifier = Modifier.align(Alignment.CenterStart)
-            ){
-                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
-            }
             Text("Tambah Menu", modifier = Modifier.align(Alignment.Center))
         }
-        OutlinedTextField(value = name, onValueChange = { newValue -> name = newValue }, label = { Text("Nama") })
-        OutlinedTextField(value = price.toString(), onValueChange = { newValue -> price = checkDigitInput(newValue) }, label = { Text("Harga") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
+        OutlinedTextField(value = name, onValueChange = { newValue -> name = newValue }, label = { Text("Nama") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = price.toString(), onValueChange = { newValue -> price = checkDigitInput(newValue) }, label = { Text("Harga") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())
         Button(onClick = { viewModel.createMenu(name, price, context) }) {
             Text("Tambah")
         }

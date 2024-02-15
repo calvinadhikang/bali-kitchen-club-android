@@ -45,7 +45,6 @@ import com.example.balikitchenclub.utils.checkDigitInput
 @Composable
 fun DetailMenuScreen(
     viewModel: MenuScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    navController: NavController,
     id: String?,
 ){
     val menu by viewModel.detailMenu.collectAsState()
@@ -61,16 +60,10 @@ fun DetailMenuScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ){
         Box(Modifier.fillMaxWidth()){
-            IconButton(
-                onClick = { navController.navigateUp() },
-                modifier = Modifier.align(Alignment.CenterStart)
-            ){
-                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "")
-            }
             Text("Detail Menu", modifier = Modifier.align(Alignment.Center))
         }
-        OutlinedTextField(value = viewModel.detailName, onValueChange = { newValue -> viewModel.detailName = newValue }, label = { Text("Nama") })
-        OutlinedTextField(value = viewModel.detailPrice.toString(), onValueChange = { newValue -> viewModel.detailPrice = checkDigitInput(newValue) }, label = { Text("Price") })
+        OutlinedTextField(value = viewModel.detailName, onValueChange = { newValue -> viewModel.detailName = newValue }, label = { Text("Nama") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = viewModel.detailPrice.toString(), onValueChange = { newValue -> viewModel.detailPrice = checkDigitInput(newValue) }, label = { Text("Price") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())
         Button(onClick = { viewModel.updateMenu(id!!.toInt(), context) }) {
             Text("Update")
         }
