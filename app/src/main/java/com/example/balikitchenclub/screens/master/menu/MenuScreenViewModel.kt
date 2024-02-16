@@ -37,7 +37,6 @@ class MenuScreenViewModel : ViewModel(){
     fun getAllMenus(){
         viewModelScope.launch {
             try {
-                Log.e("TRYING", "TRYING")
                 val api = ApiClient.apiService
                 val response = withContext(Dispatchers.IO) {
                     api.getAllMenus()
@@ -45,11 +44,6 @@ class MenuScreenViewModel : ViewModel(){
 
                 if (response.isSuccessful) {
                     val result = response.body()
-                    if (result.isNullOrEmpty()) {
-                        Log.e("DATA_EMPTY", "Kosong")
-                    } else {
-                        Log.e("DATA_RESULT", result.size.toString())
-                    }
 
                     val list = mutableStateListOf<MenuResponseItem>()
                     result?.let {

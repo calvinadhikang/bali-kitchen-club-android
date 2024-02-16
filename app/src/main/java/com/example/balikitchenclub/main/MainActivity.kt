@@ -40,11 +40,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.balikitchenclub.screens.master.employee.AddEmployeeScreen
 import com.example.balikitchenclub.screens.master.menu.AddMenuScreen
 import com.example.balikitchenclub.screens.master.menu.DetailMenuScreen
 import com.example.balikitchenclub.screens.master.menu.MenuScreen
 import com.example.balikitchenclub.screens.master.sesi.AddSesiScreen
 import com.example.balikitchenclub.screens.master.sesi.DetailSesiScreen
+import com.example.balikitchenclub.screens.master.employee.EmployeeScreen
 import com.example.balikitchenclub.screens.master.sesi.SesiScreen
 import com.example.balikitchenclub.screens.transaction.AddTransactionScreen
 import com.example.balikitchenclub.screens.transaction.TransactionScreen
@@ -137,8 +139,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     composable("sesi"){ SesiScreen(navController = navController) }
                     composable("sesi-add"){ AddSesiScreen() }
                     composable("sesi-detail/{sesiId}"){ backStackEntry -> DetailSesiScreen(id = backStackEntry.arguments?.getString("sesiId")) }
-                    composable("transaction") { TransactionScreen() }
+                    composable("transaction") { TransactionScreen(navController = navController) }
                     composable("transaction-add") { AddTransactionScreen() }
+                    composable("employee") { EmployeeScreen(navController = navController) }
+                    composable("employee-add") { AddEmployeeScreen() }
                 }
             }
         }
@@ -169,6 +173,12 @@ fun DrawerContent(navController: NavController, closeDrawer: () -> Unit){
             .fillMaxWidth()
             .clickable {
                 navController.navigate("sesi")
+                closeDrawer()
+            })
+        Text("Karyawan", modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                navController.navigate("employee")
                 closeDrawer()
             })
         Text("Transaksi", modifier = Modifier

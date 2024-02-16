@@ -1,13 +1,12 @@
-package com.example.balikitchenclub.screens.transaction
+package com.example.balikitchenclub.screens.master.employee
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,32 +15,33 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.balikitchenclub.screens.master.sesi.EmployeeViewModel
 
-@Composable
-fun TransactionScreen(
+@Composable()
+fun EmployeeScreen(
     navController: NavController,
-    viewModel: TransactionViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: EmployeeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ){
-    val transactions by viewModel.transactions.observeAsState(emptyList())
+    val staffs by viewModel.staffs.observeAsState(emptyList())
 
-    LaunchedEffect(Unit) {
-
+    LaunchedEffect(Unit){
+        viewModel.getAllStaffs()
     }
 
     Column {
         Row(Modifier.padding(bottom = 16.dp)) {
-            Text("List Menu", modifier = Modifier.weight(1F))
-            Text("Tambah Menu", modifier = Modifier.clickable{ navController.navigate("menu-add") }, color = Color.Blue)
+            Text("List Karyawan", modifier = Modifier.weight(1F))
+            Text("Tambah Karyawan", modifier = Modifier.clickable{ navController.navigate("employee-add") }, color = Color.Blue)
         }
         LazyColumn(){
-            items(items = transactions){ transaction ->
-                Text(text = transaction.customer)
-                Text(text = transaction.grand_total.toString())
+            items(items = staffs){ staff ->
+                Text(staff.name)
                 HorizontalDivider()
             }
         }
-        Text("Total Data ${transactions?.size}")
     }
+
 }
