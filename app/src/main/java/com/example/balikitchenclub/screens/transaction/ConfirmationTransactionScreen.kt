@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun TransactionScreen(
+fun ConfirmationTransactionScreen(
     navController: NavController,
     viewModel: TransactionViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ){

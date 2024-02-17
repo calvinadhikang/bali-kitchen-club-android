@@ -49,6 +49,7 @@ import com.example.balikitchenclub.screens.master.sesi.DetailSesiScreen
 import com.example.balikitchenclub.screens.master.employee.EmployeeScreen
 import com.example.balikitchenclub.screens.master.sesi.SesiScreen
 import com.example.balikitchenclub.screens.transaction.AddTransactionScreen
+import com.example.balikitchenclub.screens.transaction.ConfirmationTransactionScreen
 import com.example.balikitchenclub.screens.transaction.TransactionScreen
 import com.example.balikitchenclub.ui.theme.BaliKitchenClubTheme
 import kotlinx.coroutines.launch
@@ -140,7 +141,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     composable("sesi-add"){ AddSesiScreen() }
                     composable("sesi-detail/{sesiId}"){ backStackEntry -> DetailSesiScreen(id = backStackEntry.arguments?.getString("sesiId")) }
                     composable("transaction") { TransactionScreen(navController = navController) }
-                    composable("transaction-add") { AddTransactionScreen() }
+                    composable("transaction-add") { AddTransactionScreen(navController = navController) }
+                    composable("transaction-confirm") { ConfirmationTransactionScreen(navController = navController) }
                     composable("employee") { EmployeeScreen(navController = navController) }
                     composable("employee-add") { AddEmployeeScreen() }
                 }

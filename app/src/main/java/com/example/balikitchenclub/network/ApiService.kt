@@ -2,6 +2,7 @@ package com.example.balikitchenclub.network
 
 import com.example.balikitchenclub.network.dro.EmployeeResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseItem
+import com.example.balikitchenclub.network.dro.MenuResponseTransaction
 import com.example.balikitchenclub.network.dro.SesiResponseItem
 import com.example.balikitchenclub.network.dto.CreateEmployeeDto
 import com.example.balikitchenclub.network.dto.CreateMenuDto
@@ -20,6 +21,9 @@ interface ApiService {
 
     @GET("menu")
     suspend fun getAllMenus(): Response<List<MenuResponseItem>>
+
+    @GET("menu/transaction")
+    suspend fun getAllMenuTransaction(): Response<List<MenuResponseTransaction>>
 
     @POST("menu")
     suspend fun createMenu(

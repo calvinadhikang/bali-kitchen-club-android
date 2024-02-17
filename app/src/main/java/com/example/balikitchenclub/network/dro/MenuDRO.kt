@@ -19,3 +19,12 @@ data class MenuResponseItem(
 	@field:SerializedName("category")
 	val category: String
 )
+
+data class MenuResponseTransaction(
+	var price: Int,
+	var name: String,
+	var id: Int,
+	var stock: Int,
+	var category: String,
+	var qty: Int
+)
