@@ -53,10 +53,10 @@ interface ApiService {
         @Body() createSesiDto: CreateSesiDto
     ): Response<SesiResponseItem>
 
-    @GET("user/staff")
+    @GET("user/staffs")
     suspend fun getAllStaffs(): Response<List<EmployeeResponseItem>>
 
-    @POST("register")
+    @POST("user/register")
     suspend fun registerUser(
         @Body createEmployeeDto: CreateEmployeeDto
     ): Response<EmployeeResponseItem>

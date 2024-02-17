@@ -54,6 +54,8 @@ fun AddEmployeeScreen(
             Text("Tambah Karyawan", modifier = Modifier.align(Alignment.Center))
         }
         OutlinedTextField(value = name, onValueChange = { newValue -> name = newValue }, label = { Text("Nama") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = username, onValueChange = { newValue -> username = newValue }, label = { Text("Username") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = password, onValueChange = { newValue -> password = newValue }, label = { Text("Password") }, modifier = Modifier.fillMaxWidth())
 
         ExposedDropdownMenuBox(
             expanded = expanded,
@@ -85,7 +87,7 @@ fun AddEmployeeScreen(
             }
         }
 
-        Button(onClick = {  }) {
+        Button(onClick = { viewModel.createUser(name, username, password, selectedRole) }) {
             Text("Tambah")
         }
     }

@@ -1,6 +1,7 @@
 package com.example.balikitchenclub.screens.master.sesi
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.balikitchenclub.network.ApiClient
 import com.example.balikitchenclub.network.dro.EmployeeResponseItem
 import com.example.balikitchenclub.network.dro.SesiResponseItem
+import com.example.balikitchenclub.network.dto.CreateEmployeeDto
 import com.example.balikitchenclub.network.dto.CreateSesiDto
 import com.example.balikitchenclub.utils.return24HourTime
 import kotlinx.coroutines.Dispatchers
@@ -42,8 +44,14 @@ class EmployeeViewModel : ViewModel(){
         }
     }
 
-    fun createUser(name: String, username: String, password: String, role: String){
-
+    fun createUser(name: String, username: String, password: String, role: String) {
+        viewModelScope.launch {
+            val api = ApiClient.apiService
+            val createEmployeeDto = CreateEmployeeDto(name, username, password, role)
+            val response = withContext(Dispatchers.IO){
+                api.registerUser(createEmployeeDto)
+            }
+        }
     }
 
 }
