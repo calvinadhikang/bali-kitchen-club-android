@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -15,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun MenuTransaction(
+fun MenuTransactionInput(
     name: String,
     stock: String,
     price: String,
@@ -38,12 +39,12 @@ fun MenuTransaction(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = { addQty() }) {
-                    Icon(imageVector = Icons.Filled.AddCircle, contentDescription = "")
-                }
-                Text(qty)
                 IconButton(onClick = { subsQty() }) {
                     Icon(imageVector = Icons.Filled.RemoveCircle, contentDescription = "")
+                }
+                Text(qty)
+                IconButton(onClick = { addQty() }) {
+                    Icon(imageVector = Icons.Filled.AddCircleOutline, contentDescription = "")
                 }
             }
         }

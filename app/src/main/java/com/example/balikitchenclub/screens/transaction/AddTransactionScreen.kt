@@ -6,15 +6,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.balikitchenclub.components.MenuTransaction
+import com.example.balikitchenclub.components.MenuTransactionInput
 
 @Composable
 fun AddTransactionScreen(
@@ -39,14 +43,20 @@ fun AddTransactionScreen(
             Modifier.weight(1F)
         ){
             items(items = menus, key = { it.id }){ menu ->
-                MenuTransaction(name = menu.name, stock = menu.stock.toString(), price = menu.price.toString(), qty = menu.qty.toString(),
+                MenuTransactionInput(name = menu.name, stock = menu.stock.toString(), price = menu.price.toString(), qty = menu.qty.toString(),
                     addQty = { viewModel.mutateQty(1, menu.id) },
                     subsQty = { viewModel.mutateQty(-1, menu.id) }
                 )
             }
         }
-        Button(onClick = { navController.navigate("transaction-confirmation") }) {
-            Text("Buat Transaksi")
+        OutlinedButton(
+            onClick = { navController.navigate("transaction-confirmation") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue, contentColor = Color.White)
+        ) {
+            Text("Buat Transaksi", modifier = Modifier.weight(1F))
+            Text("${menus.size} items - Rp ${menus.size}")
         }
     }
 }

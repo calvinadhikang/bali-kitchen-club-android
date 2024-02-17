@@ -142,7 +142,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     composable("sesi-detail/{sesiId}"){ backStackEntry -> DetailSesiScreen(id = backStackEntry.arguments?.getString("sesiId")) }
                     composable("transaction") { TransactionScreen(navController = navController) }
                     composable("transaction-add") { AddTransactionScreen(navController = navController) }
-                    composable("transaction-confirm") { ConfirmationTransactionScreen(navController = navController) }
+                    composable("transaction-confirmation") { ConfirmationTransactionScreen(navController = navController) }
                     composable("employee") { EmployeeScreen(navController = navController) }
                     composable("employee-add") { AddEmployeeScreen() }
                 }
