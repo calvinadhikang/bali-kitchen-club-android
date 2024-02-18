@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DrawerValue
@@ -105,7 +106,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                             Icon(imageVector = Icons.Filled.Home, contentDescription = "")
                         }
                         IconButton(onClick = { navController.navigate("transaction-add") }) {
-                            Icon(imageVector = Icons.Filled.Add, contentDescription = "")
+                            Icon(imageVector = Icons.Filled.Logout, contentDescription = "")
                         }
                     },
                     floatingActionButton = {
