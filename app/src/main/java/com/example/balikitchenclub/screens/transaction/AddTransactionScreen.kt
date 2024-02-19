@@ -50,13 +50,16 @@ fun AddTransactionScreen(
             }
         }
         OutlinedButton(
-            onClick = { navController.navigate("transaction-confirmation") },
+            onClick = {
+                viewModel.setConfirmedMenu()
+                navController.navigate("transaction-confirmation")
+            },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Blue, contentColor = Color.White)
         ) {
             Text("Buat Transaksi", modifier = Modifier.weight(1F))
-            Text("${menus.size} items - Rp ${menus.size}")
+            Text("${viewModel.totalItem} items - Rp ${viewModel.totalPrice}")
         }
     }
 }

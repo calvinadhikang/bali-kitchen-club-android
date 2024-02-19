@@ -7,6 +7,7 @@ import com.example.balikitchenclub.network.dro.SesiResponseItem
 import com.example.balikitchenclub.network.dto.CreateEmployeeDto
 import com.example.balikitchenclub.network.dto.CreateMenuDto
 import com.example.balikitchenclub.network.dto.CreateSesiDto
+import com.example.balikitchenclub.network.dto.CreateTransactionDto
 import com.example.balikitchenclub.network.dto.UpdateMenuDto
 import retrofit2.Response
 import retrofit2.http.Body
@@ -64,4 +65,9 @@ interface ApiService {
     suspend fun registerUser(
         @Body createEmployeeDto: CreateEmployeeDto
     ): Response<EmployeeResponseItem>
+
+    @POST("transaction")
+    suspend fun createTransaction(
+        @Body createTransactionDto: CreateTransactionDto
+    ): Response<CreateTransactionDto>
 }
