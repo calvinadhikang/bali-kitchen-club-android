@@ -1,9 +1,11 @@
 package com.example.balikitchenclub.network
 
+import android.view.SurfaceControl.Transaction
 import com.example.balikitchenclub.network.dro.EmployeeResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseTransaction
 import com.example.balikitchenclub.network.dro.SesiResponseItem
+import com.example.balikitchenclub.network.dro.TransactionResponseItem
 import com.example.balikitchenclub.network.dto.CreateEmployeeDto
 import com.example.balikitchenclub.network.dto.CreateMenuDto
 import com.example.balikitchenclub.network.dto.CreateSesiDto
@@ -70,4 +72,7 @@ interface ApiService {
     suspend fun createTransaction(
         @Body createTransactionDto: CreateTransactionDto
     ): Response<CreateTransactionDto>
+
+    @GET("transaction")
+    suspend fun getTransactions(): Response<List<TransactionResponseItem>>
 }

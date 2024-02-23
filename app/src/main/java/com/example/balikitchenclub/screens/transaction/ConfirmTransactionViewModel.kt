@@ -3,6 +3,10 @@ package com.example.balikitchenclub.screens.transaction
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -17,16 +21,26 @@ import kotlinx.coroutines.withContext
 
 class ConfirmTransactionViewModel() : ViewModel() {
     var menus = MutableStateFlow<List<MenuResponseTransaction>>(emptyList())
+    var total by mutableStateOf(0)
 
     fun getConfirmedMenu(){
         menus = TransactionViewModel.confirmMenus
+        var tempTotal = 0
+        menus.value.forEachIndexed { index, menu ->
+            if (menu.qty > 0){
+                tempTotal += menu.qty * menu.price
+            }
+        }
+        total = tempTotal
     }
 
-    fun createTransaction(customer: String, ifSuccess: () -> Unit){
+
+    fun createTransaction(customer: String, status: Boolean, ifSuccess: () -> Unit){
         viewModelScope.launch {
             val api = ApiClient.apiService
 
             val detailsList = mutableListOf<CreateTransactionDetailDto>()
+            var status = if (status) { "Lunas" } else { "Belum Lunas" }
             var total = 0;
             menus.value.forEachIndexed { index, menu ->
                 if (menu.qty > 0){
@@ -44,6 +58,7 @@ class ConfirmTransactionViewModel() : ViewModel() {
                 tax_value = total,
                 grand_total = total,
                 details = detailsList,
+                status = status,
                 employee = 0
             )
 

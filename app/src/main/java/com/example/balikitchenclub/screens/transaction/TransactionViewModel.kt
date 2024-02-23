@@ -54,7 +54,17 @@ class TransactionViewModel(): ViewModel() {
     }
 
     fun getAllTransactions(){
+        viewModelScope.launch {
+            val api = ApiClient.apiService
+            val response = withContext(Dispatchers.IO){
+                api.getTransactions()
+            }
 
+            if (response.isSuccessful){
+                val result = response.body()
+                _transactions.value = result!!
+            }
+        }
     }
 
     private fun countTotalItem(){

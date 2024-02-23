@@ -7,6 +7,7 @@ data class CreateTransactionDto(
     val tax_value: Int,
     val total: Int,
     val grand_total: Int,
+    val status: String,
     val details: List<CreateTransactionDetailDto>
 )
 

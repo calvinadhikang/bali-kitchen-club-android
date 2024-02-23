@@ -154,6 +154,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     composable("transaction") { TransactionScreen(navController = navController) }
                     composable("transaction-add") { AddTransactionScreen(navController = navController) }
                     composable("transaction-confirmation") { ConfirmationTransactionScreen(navController = navController) }
+                    composable("transaction-detail/transId") { AddTransactionScreen(navController = navController) }
                     composable("employee") { EmployeeScreen(navController = navController) }
                     composable("employee-add") { AddEmployeeScreen() }
                 }

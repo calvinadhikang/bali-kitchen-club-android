@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.balikitchenclub.components.TransactionListCard
+import com.example.balikitchenclub.utils.thousandDelimiter
 
 @Composable
 fun TransactionScreen(
@@ -27,7 +29,7 @@ fun TransactionScreen(
     val transactions by viewModel.transactions.observeAsState(emptyList())
 
     LaunchedEffect(Unit) {
-
+        viewModel.getAllTransactions()
     }
 
     Column {
@@ -37,9 +39,9 @@ fun TransactionScreen(
         }
         LazyColumn(){
             items(items = transactions){ transaction ->
-                Text(text = transaction.customer)
-                Text(text = transaction.grand_total.toString())
-                HorizontalDivider()
+                TransactionListCard(customer = transaction.customer, total_price = thousandDelimiter(transaction.grand_total)) {
+                    navController.navigate("transaction-detail/${transaction.id}")
+                }
             }
         }
         Text("Total Data ${transactions?.size}")
