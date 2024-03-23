@@ -18,6 +18,7 @@ import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @POST("login")
@@ -75,7 +76,10 @@ interface ApiService {
     ): Response<CreateTransactionDto>
 
     @GET("transaction")
-    suspend fun getTransactions(): Response<List<TransactionResponseItem>>
+    suspend fun getTransactions(
+        @Query("time") time: String = "today",
+        @Query("sesi") sesi: Int = 0
+    ): Response<List<TransactionResponseItem>>
 
     @GET("transaction/{id}")
     suspend fun getDetailTransaction(

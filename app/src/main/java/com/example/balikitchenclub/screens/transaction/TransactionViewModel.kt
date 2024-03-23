@@ -39,6 +39,57 @@ class TransactionViewModel(): ViewModel() {
     var totalItem by mutableStateOf(0)
     var totalPrice by mutableStateOf(0)
 
+    var sesiNow: MutableStateFlow<SesiResponseItem?> = MutableStateFlow(null)
+    var sesiListName: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
+    var sesiListId: MutableStateFlow<List<Int>> = MutableStateFlow(emptyList())
+    var sesiSelected = mutableStateOf(0)
+
+    fun getSesiNow(){
+        viewModelScope.launch {
+            try {
+                val api = ApiClient.apiService
+                val response = withContext(Dispatchers.IO){
+                    api.getSesiNow()
+                }
+
+                if (response.isSuccessful){
+                    val result = response.body()
+                    sesiNow.value = result
+                }
+
+            } catch (e: Exception){
+
+            }
+        }
+    }
+
+    fun getAllSesi(){
+        viewModelScope.launch {
+            try {
+                val api = ApiClient.apiService
+                val response = withContext(Dispatchers.IO){
+                    api.getAllSesi()
+                }
+
+                if (response.isSuccessful){
+                    val result = response.body()
+
+                    var tempName = mutableListOf<String>("Now")
+                    var tempId = mutableListOf<Int>(0)
+                    result!!.forEachIndexed { index, sesiResponseItem ->
+                        tempName.add(sesiResponseItem.name)
+                        tempId.add(sesiResponseItem.id)
+                    }
+
+                    sesiListName.value = tempName
+                    sesiListId.value = tempId
+                }
+            } catch (e: Exception){
+
+            }
+        }
+    }
+
     fun setConfirmedMenu(){
         viewModelScope.launch {
             var list = mutableStateListOf<MenuResponseTransaction>()
@@ -53,11 +104,14 @@ class TransactionViewModel(): ViewModel() {
         }
     }
 
-    fun getAllTransactions(){
+    fun getAllTransactions(
+        time: String = "today",
+        sesi: Int = 0,
+    ){
         viewModelScope.launch {
             val api = ApiClient.apiService
             val response = withContext(Dispatchers.IO){
-                api.getTransactions()
+                api.getTransactions(time = time, sesi = sesi)
             }
 
             if (response.isSuccessful){
