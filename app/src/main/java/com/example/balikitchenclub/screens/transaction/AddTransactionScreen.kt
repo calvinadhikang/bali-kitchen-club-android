@@ -1,7 +1,9 @@
 package com.example.balikitchenclub.screens.transaction
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -29,15 +32,28 @@ fun AddTransactionScreen(
     viewModel: TransactionViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ){
     val menus by viewModel.menus.collectAsState(emptyList())
+    val sesiNow by viewModel.sesiNow.collectAsState()
 
     LaunchedEffect(Unit){
         viewModel.getAllMenuTransaction()
+        viewModel.getSesiNow()
     }
 
     Column(
         Modifier.fillMaxSize()
     ){
-        Text(text = "Tambah Transaksi", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+        Text(text = "Tambah Transaksi", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp))
+
+        Column(
+            modifier = Modifier
+                .background(if (sesiNow != null) Color.Green else Color.Red)
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Sesi Sekarang : ${sesiNow?.name ?: "Tidak Ada Sesi"}")
+        }
+        Spacer(Modifier.padding(vertical = 10.dp))
         LazyColumn(
             Modifier.weight(1F)
         ){
@@ -48,17 +64,24 @@ fun AddTransactionScreen(
                 )
             }
         }
+
         OutlinedButton(
             onClick = {
                 viewModel.setConfirmedMenu()
                 navController.navigate("transaction-confirmation")
             },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = getContentPadding(), vertical = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = getContentPadding(), vertical = 8.dp),
             shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue, contentColor = Color.White)
+            enabled = sesiNow != null
         ) {
-            Text("Buat Transaksi", modifier = Modifier.weight(1F))
-            Text("${viewModel.totalItem} items - Rp ${viewModel.totalPrice}")
+            if (sesiNow != null){
+                Text("Buat Transaksi", modifier = Modifier.weight(1F))
+                Text("${viewModel.totalItem} items - Rp ${viewModel.totalPrice}")
+            }else if (sesiNow == null){
+                Text("Harus Ada Sesi Aktif", color = Color.Red)
+            }
         }
     }
 }

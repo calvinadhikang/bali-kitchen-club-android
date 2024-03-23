@@ -31,14 +31,15 @@ fun SelectOptions(
     names: List<String>,
     values: List<Int>,
     defaultIndex: Int,
-    onOptionSelected: (Int) -> Unit
+    onOptionSelected: (Int) -> Unit,
+    labelText: String = "Select an option:",
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(defaultIndex) }
     var selectedOption by remember { mutableStateOf(names[defaultIndex]) }
 
     Column {
-        Text("Select an option:")
+        Text(labelText)
         Row(
             modifier = Modifier
                 .fillMaxWidth()

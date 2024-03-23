@@ -1,5 +1,11 @@
 package com.example.balikitchenclub.network.dro
 
+data class TransactionListDro(
+    val data: List<TransactionResponseItem>,
+    val total_earning: Int,
+    val grand_total: Int,
+)
+
 data class TransactionResponseItem(
     val id: Int,
     val customer: String,

@@ -42,11 +42,11 @@ fun TransactionScreen(
     viewModel: TransactionViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ){
     val transactions by viewModel.transactions.observeAsState(emptyList())
-    val sesiNow by viewModel.sesiNow.collectAsState()
     val listSesiName by viewModel.sesiListName.collectAsState()
     val listSesiId by viewModel.sesiListId.collectAsState()
 
     var sesiSelected by viewModel.sesiSelected
+    var timeSelected by viewModel.timeSelected
 
     val context = LocalContext.current
 
@@ -62,35 +62,34 @@ fun TransactionScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.getSesiNow()
         viewModel.getAllSesi()
     }
 
     LaunchedEffect(sesiSelected){
-        viewModel.getAllTransactions(sesi = sesiSelected)
+        viewModel.getAllTransactions()
     }
 
     Column {
-        Column(
-            modifier = Modifier
-                .background(if (sesiNow != null) Color.Green else Color.Red)
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Sesi Sekarang : ${sesiNow?.name ?: "Tidak Ada Sesi"}")
-        }
-
-        LazyRow {
-            item {
-                OutlinedButton(onClick = { /*TODO*/ }) {
-                    Text("Sesi Sekarang")
+            Text("Tampilkan data transaksi:", Modifier.weight(1F))
+            OutlinedButton(onClick = {
+                if (timeSelected == "today"){
+                    timeSelected = "past"
+                }else{
+                    timeSelected = "today"
                 }
+
+                viewModel.getAllTransactions()
+            }) {
+                Text(if (timeSelected == "today") "Hari Ini" else "Kemarin")
             }
         }
 
         if (listSesiId.isNotEmpty() && listSesiName.isNotEmpty()){
-            SelectOptions(names = listSesiName, values = listSesiId, defaultIndex = 0,
+            SelectOptions(names = listSesiName, values = listSesiId, defaultIndex = 0, labelText = "Pilih sesi:",
                 onOptionSelected = {
                     sesiSelected = it
                 }
@@ -102,22 +101,21 @@ fun TransactionScreen(
             Text(
                 "Tambah Transaksi",
                 modifier = Modifier.clickable {
-                    if (sesiNow == null) {
-                        Toast.makeText(context, "Transaksi hanya bisa dilakukan saat ada sesi Aktif !", Toast.LENGTH_LONG).show()
-                    }else{
-                        navController.navigate("transaction-add")
-                    }
+                    navController.navigate("transaction-add")
                 },
                 color = Color.Blue,
             )
         }
         LazyColumn(){
             items(items = transactions){ transaction ->
-                TransactionListCard(customer = transaction.customer, totalPrice = thousandDelimiter(transaction.grand_total) ) {
+                TransactionListCard(customer = transaction.customer, totalPrice = thousandDelimiter(transaction.grand_total), status = transaction.status ) {
                     navController.navigate("transaction-detail/${transaction.id}")
                 }
             }
+            item {
+                Text("Total Data ${transactions?.size}")
+                Text("Total Uang Diterima : Rp ${thousandDelimiter(viewModel.totalEarnings.value)}")
+            }
         }
-        Text("Total Data ${transactions?.size}")
     }
 }

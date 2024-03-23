@@ -42,7 +42,10 @@ class TransactionViewModel(): ViewModel() {
     var sesiNow: MutableStateFlow<SesiResponseItem?> = MutableStateFlow(null)
     var sesiListName: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
     var sesiListId: MutableStateFlow<List<Int>> = MutableStateFlow(emptyList())
+
     var sesiSelected = mutableStateOf(0)
+    var timeSelected = mutableStateOf("today")
+    var totalEarnings = mutableStateOf(0)
 
     fun getSesiNow(){
         viewModelScope.launch {
@@ -103,23 +106,28 @@ class TransactionViewModel(): ViewModel() {
             Log.e("CHECK", confirmMenus.value.toString())
         }
     }
-
-    fun getAllTransactions(
-        time: String = "today",
-        sesi: Int = 0,
-    ){
+    fun getAllTransactions(){
         viewModelScope.launch {
             val api = ApiClient.apiService
             val response = withContext(Dispatchers.IO){
-                api.getTransactions(time = time, sesi = sesi)
+                api.getTransactions(time = timeSelected.value, sesi = sesiSelected.value)
             }
 
             if (response.isSuccessful){
                 val result = response.body()
                 _transactions.value = result!!
+
+                var total = 0
+                result!!.forEachIndexed { index, transaction ->
+                    if (transaction.status == "Lunas"){
+                        total += transaction.grand_total
+                    }
+                }
+                totalEarnings.value = total
             }
         }
     }
+
 
     private fun countTotalItem(){
         var total = 0

@@ -22,6 +22,7 @@ import com.example.balikitchenclub.utils.getContentPadding
 fun TransactionListCard(
     customer: String,
     totalPrice: String,
+    status: String,
     onClick : () -> Unit
 ){
     Card(
@@ -31,7 +32,12 @@ fun TransactionListCard(
     ) {
         Column(Modifier.padding(10.dp)){
             Text("$customer", fontWeight = FontWeight.Bold)
-            Text("Rp $totalPrice")
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ){
+                Text("Rp $totalPrice")
+                Text("Status : ${status}")
+            }
         }
     }
 }
