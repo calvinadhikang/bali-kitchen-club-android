@@ -39,7 +39,7 @@ fun TransactionScreen(
         }
         LazyColumn(){
             items(items = transactions){ transaction ->
-                TransactionListCard(customer = transaction.customer, total_price = thousandDelimiter(transaction.grand_total)) {
+                TransactionListCard(customer = transaction.customer, totalPrice = thousandDelimiter(transaction.grand_total) ) {
                     navController.navigate("transaction-detail/${transaction.id}")
                 }
             }

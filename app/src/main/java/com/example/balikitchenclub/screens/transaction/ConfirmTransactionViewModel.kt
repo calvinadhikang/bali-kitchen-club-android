@@ -44,7 +44,7 @@ class ConfirmTransactionViewModel() : ViewModel() {
             var total = 0;
             menus.value.forEachIndexed { index, menu ->
                 if (menu.qty > 0){
-                    val item = CreateTransactionDetailDto(menu = menu.id, qty = menu.qty, price = menu.price, subtotal = menu.qty * menu.price)
+                    val item = CreateTransactionDetailDto(menu = menu.id, qty = menu.qty, price = menu.price, subtotal = menu.qty * menu.price, name = menu.name)
                     detailsList.add(item)
 
                     total += menu.qty * menu.price

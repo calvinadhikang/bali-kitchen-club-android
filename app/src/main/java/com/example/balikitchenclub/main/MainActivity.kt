@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Menu
@@ -49,6 +51,7 @@ import com.example.balikitchenclub.screens.master.employee.EmployeeScreen
 import com.example.balikitchenclub.screens.master.sesi.SesiScreen
 import com.example.balikitchenclub.screens.transaction.AddTransactionScreen
 import com.example.balikitchenclub.screens.transaction.ConfirmationTransactionScreen
+import com.example.balikitchenclub.screens.transaction.DetailTransactionScreen
 import com.example.balikitchenclub.screens.transaction.TransactionScreen
 import com.example.balikitchenclub.ui.theme.BaliKitchenClubTheme
 import kotlinx.coroutines.launch
@@ -102,7 +105,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                             Icon(imageVector = Icons.Filled.Home, contentDescription = "")
                         }
                         IconButton(onClick = { navController.navigate("transaction-add") }) {
-                            Icon(imageVector = Icons.Filled.Logout, contentDescription = "")
+                            Icon(imageVector = Icons.AutoMirrored.Filled.Logout, contentDescription = "")
                         }
                     },
                     floatingActionButton = {
@@ -154,7 +157,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     composable("transaction") { TransactionScreen(navController = navController) }
                     composable("transaction-add") { AddTransactionScreen(navController = navController) }
                     composable("transaction-confirmation") { ConfirmationTransactionScreen(navController = navController) }
-                    composable("transaction-detail/transId") { AddTransactionScreen(navController = navController) }
+                    composable("transaction-detail/{transId}") { backStackEntry -> DetailTransactionScreen(id = backStackEntry.arguments?.getString("transId")) }
                     composable("employee") { EmployeeScreen(navController = navController) }
                     composable("employee-add") { AddEmployeeScreen() }
                 }

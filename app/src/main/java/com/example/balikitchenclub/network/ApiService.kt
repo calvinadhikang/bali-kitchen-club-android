@@ -1,6 +1,7 @@
 package com.example.balikitchenclub.network
 
 import android.view.SurfaceControl.Transaction
+import com.example.balikitchenclub.network.dro.BasicResponse
 import com.example.balikitchenclub.network.dro.EmployeeResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseTransaction
@@ -75,4 +76,14 @@ interface ApiService {
 
     @GET("transaction")
     suspend fun getTransactions(): Response<List<TransactionResponseItem>>
+
+    @GET("transaction/{id}")
+    suspend fun getDetailTransaction(
+        @Path("id") id: Int
+    ): Response<TransactionResponseItem>
+
+    @PATCH("transaction/{id}")
+    suspend fun setTransactionLunas(
+        @Path("id") id: Int
+    ): Response<BasicResponse>
 }

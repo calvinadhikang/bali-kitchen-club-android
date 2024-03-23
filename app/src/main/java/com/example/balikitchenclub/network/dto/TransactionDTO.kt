@@ -13,6 +13,7 @@ data class CreateTransactionDto(
 
 data class CreateTransactionDetailDto(
     val menu: Int,
+    val name: String,
     val price: Int,
     val qty: Int,
     val subtotal: Int

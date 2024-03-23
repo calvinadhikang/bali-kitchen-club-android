@@ -9,15 +9,17 @@ data class TransactionResponseItem(
     val total: Int,
     val grand_total: Int,
     val sesi: Int,
-    val status: String,
+    var status: String,
     val createdAt: String,
-    val details: List<DetailTransactionResponseItem>
+    val details: List<DetailTransactionResponseItem>,
+    val employee_detail: EmployeeResponseItem
 )
 
 data class DetailTransactionResponseItem(
     val id: Int,
     val menu: Int,
     val price: Int,
+    val name: String,
     val qty: Int,
     val subtotal: Int
 )
