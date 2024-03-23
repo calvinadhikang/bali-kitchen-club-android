@@ -6,6 +6,7 @@ import com.example.balikitchenclub.network.dro.EmployeeResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseTransaction
 import com.example.balikitchenclub.network.dro.SesiResponseItem
+import com.example.balikitchenclub.network.dro.TransactionListDro
 import com.example.balikitchenclub.network.dro.TransactionResponseItem
 import com.example.balikitchenclub.network.dto.CreateEmployeeDto
 import com.example.balikitchenclub.network.dto.CreateMenuDto
@@ -79,7 +80,7 @@ interface ApiService {
     suspend fun getTransactions(
         @Query("time") time: String = "today",
         @Query("sesi") sesi: Int = 0
-    ): Response<List<TransactionResponseItem>>
+    ): Response<TransactionListDro>
 
     @GET("transaction/{id}")
     suspend fun getDetailTransaction(

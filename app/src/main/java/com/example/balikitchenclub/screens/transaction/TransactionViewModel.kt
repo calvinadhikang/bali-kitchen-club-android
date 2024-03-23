@@ -114,16 +114,9 @@ class TransactionViewModel(): ViewModel() {
             }
 
             if (response.isSuccessful){
-                val result = response.body()
-                _transactions.value = result!!
-
-                var total = 0
-                result!!.forEachIndexed { index, transaction ->
-                    if (transaction.status == "Lunas"){
-                        total += transaction.grand_total
-                    }
-                }
-                totalEarnings.value = total
+                val result = response.body()!!
+                _transactions.value = result.data
+                totalEarnings.value = result.total_earning
             }
         }
     }

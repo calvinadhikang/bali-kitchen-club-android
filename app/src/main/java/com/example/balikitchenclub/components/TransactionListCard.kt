@@ -35,8 +35,8 @@ fun TransactionListCard(
             Row(
                 modifier = Modifier.fillMaxWidth()
             ){
-                Text("Rp $totalPrice")
-                Text("Status : ${status}")
+                Text("Rp $totalPrice", modifier = Modifier.weight(1F))
+                Text(status)
             }
         }
     }
