@@ -1,5 +1,6 @@
 package com.example.balikitchenclub.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -19,8 +20,8 @@ fun ColumnWraper(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, Color.LightGray, shape = RoundedCornerShape(10.dp))
-            .padding(8.dp)
+            .border(1.dp, Color.LightGray, shape = RoundedCornerShape(16.dp))
+            .padding(16.dp)
     ){
         content()
     }

@@ -59,7 +59,7 @@ class ConfirmTransactionViewModel() : ViewModel() {
                 grand_total = total,
                 details = detailsList,
                 status = status,
-                employee = 0
+                employee = 1
             )
 
             val response = withContext(Dispatchers.IO){

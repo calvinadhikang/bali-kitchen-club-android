@@ -25,12 +25,9 @@ import kotlinx.coroutines.withContext
 
 class MenuScreenViewModel : ViewModel(){
 
-    private val _menus = MutableLiveData<List<MenuResponseItem>>()
-    val menus: LiveData<List<MenuResponseItem>> = _menus
-
     var detailName by mutableStateOf("")
     var detailPrice by mutableStateOf(0)
-    var detailMenu: MutableStateFlow<MenuResponseItem?> = MutableStateFlow(null)
+    var detailStock by mutableStateOf(0)
 
     var data: MutableStateFlow<List<MenuResponseItem>> = MutableStateFlow(mutableStateListOf())
 
@@ -81,9 +78,9 @@ class MenuScreenViewModel : ViewModel(){
 
             if (response.isSuccessful) {
                 var result = response.body()
-                detailMenu.value = result
                 detailPrice = result!!.price
                 detailName = result!!.name
+                detailStock = result!!.stock
             }
         }
     }

@@ -20,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.balikitchenclub.components.ColumnWraper
 import com.example.balikitchenclub.utils.checkDigitInput
 
 @Composable
@@ -46,18 +48,13 @@ fun AddMenuScreen(
     var name by rememberSaveable { mutableStateOf("") }
     var price by rememberSaveable { mutableStateOf(0) }
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ){
-        Box(Modifier.fillMaxWidth()){
-            Text("Tambah Menu", modifier = Modifier.align(Alignment.Center))
-        }
+    ColumnWraper {
+        Text("Tambah Menu", modifier = Modifier.padding(bottom = 16.dp), style = MaterialTheme.typography.titleSmall)
         OutlinedTextField(value = name, onValueChange = { newValue -> name = newValue }, label = { Text("Nama") }, modifier = Modifier.fillMaxWidth())
         OutlinedTextField(value = price.toString(), onValueChange = { newValue -> price = checkDigitInput(newValue) }, label = { Text("Harga") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())
         Button(onClick = { viewModel.createMenu(name, price, context) }) {
             Text("Tambah")
         }
-        Spacer(modifier = Modifier.weight(1F))
     }
 }
 

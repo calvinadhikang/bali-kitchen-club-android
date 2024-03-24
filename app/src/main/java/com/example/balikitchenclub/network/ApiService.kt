@@ -6,11 +6,13 @@ import com.example.balikitchenclub.network.dro.EmployeeResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseTransaction
 import com.example.balikitchenclub.network.dro.SesiResponseItem
+import com.example.balikitchenclub.network.dro.StockDro
 import com.example.balikitchenclub.network.dro.TransactionListDro
 import com.example.balikitchenclub.network.dro.TransactionResponseItem
 import com.example.balikitchenclub.network.dto.CreateEmployeeDto
 import com.example.balikitchenclub.network.dto.CreateMenuDto
 import com.example.balikitchenclub.network.dto.CreateSesiDto
+import com.example.balikitchenclub.network.dto.CreateStockDto
 import com.example.balikitchenclub.network.dto.CreateTransactionDto
 import com.example.balikitchenclub.network.dto.UpdateMenuDto
 import retrofit2.Response
@@ -90,5 +92,15 @@ interface ApiService {
     @PATCH("transaction/{id}")
     suspend fun setTransactionLunas(
         @Path("id") id: Int
+    ): Response<BasicResponse>
+
+    @GET("stock/{id}")
+    suspend fun getStockMutationByMenuId(
+        @Path("id") id: Int
+    ): Response<List<StockDro>>
+
+    @POST("stock/add")
+    suspend fun addStockByMenuId(
+        @Body createStockDto: CreateStockDto
     ): Response<BasicResponse>
 }
