@@ -1,6 +1,7 @@
 package com.example.balikitchenclub.screens.master.sesi
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -83,7 +84,7 @@ class SesiViewModel : ViewModel(){
                     Toast.makeText(context, "Berhasil Tambah Sesi ${name}", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-
+                Log.e("ERROR", e.localizedMessage)
             }
         }
     }

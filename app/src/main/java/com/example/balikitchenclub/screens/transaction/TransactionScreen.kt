@@ -50,16 +50,16 @@ fun TransactionScreen(
 
     val context = LocalContext.current
 
-    DisposableEffect(Unit) {
-        val callback = NavController.OnDestinationChangedListener { controller, _, _ ->
-            // Execute your side-effect here
-            sesiSelected = 0
-        }
-        navController.addOnDestinationChangedListener(callback)
-        onDispose {
-            navController.removeOnDestinationChangedListener(callback)
-        }
-    }
+//    DisposableEffect(Unit) {
+//        val callback = NavController.OnDestinationChangedListener { controller, _, _ ->
+//            // Execute your side-effect here
+//            sesiSelected = 0
+//        }
+//        navController.addOnDestinationChangedListener(callback)
+//        onDispose {
+//            navController.removeOnDestinationChangedListener(callback)
+//        }
+//    }
 
     LaunchedEffect(Unit) {
         viewModel.getAllSesi()

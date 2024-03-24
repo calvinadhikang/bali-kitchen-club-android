@@ -1,6 +1,7 @@
 package com.example.balikitchenclub.screens.transaction
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -114,9 +115,10 @@ class TransactionViewModel(): ViewModel() {
             }
 
             if (response.isSuccessful){
-                val result = response.body()!!
-                _transactions.value = result.data
-                totalEarnings.value = result.total_earning
+                val result = response.body()
+                Log.e("CHECK", response.body().toString())
+                _transactions.value = result!!.data
+                totalEarnings.value = result!!.total_earning
             }
         }
     }

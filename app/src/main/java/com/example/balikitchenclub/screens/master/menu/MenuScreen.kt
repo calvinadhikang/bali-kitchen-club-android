@@ -22,10 +22,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.balikitchenclub.utils.thousandDelimiter
 
 @Composable
 fun MenuScreen(
@@ -40,7 +43,7 @@ fun MenuScreen(
 
     Column {
         Row(Modifier.padding(bottom = 16.dp)) {
-            Text("List Menu", modifier = Modifier.weight(1F))
+            Text("List Menu", modifier = Modifier.weight(1F), fontWeight = FontWeight.Bold, fontSize = 24.sp)
             Text("Tambah Menu", modifier = Modifier.clickable{ navController.navigate("menu-add") }, color = Color.Blue)
         }
         LazyColumn(){
@@ -48,7 +51,9 @@ fun MenuScreen(
                 Column(
                     modifier = Modifier.clickable { navController.navigate("menu-detail/${menu.id}") }
                 ) {
-                    Text(menu.name)
+                    Text(menu.name, fontWeight = FontWeight.SemiBold)
+                    Text("Stok: ${menu.stock}")
+                    Text("Rp ${thousandDelimiter(menu.price)}")
                     HorizontalDivider()
                     Spacer(modifier = Modifier.padding(4.dp))
                 }

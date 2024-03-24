@@ -67,9 +67,7 @@ class ConfirmTransactionViewModel() : ViewModel() {
             }
 
             if (response.isSuccessful){
-                if (response.code() == 201){
-                    ifSuccess()
-                }
+                ifSuccess()
             }
         }
     }

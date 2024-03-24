@@ -22,6 +22,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,7 +62,7 @@ fun DetailMenuScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ){
         Box(Modifier.fillMaxWidth()){
-            Text("Detail Menu", modifier = Modifier.align(Alignment.Center))
+            Text("Detail Menu", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.titleSmall)
         }
         OutlinedTextField(value = viewModel.detailName, onValueChange = { newValue -> viewModel.detailName = newValue }, label = { Text("Nama") }, modifier = Modifier.fillMaxWidth())
         OutlinedTextField(value = viewModel.detailPrice.toString(), onValueChange = { newValue -> viewModel.detailPrice = checkDigitInput(newValue) }, label = { Text("Price") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())

@@ -31,10 +31,10 @@ interface ApiService {
     @GET("menu/transaction")
     suspend fun getAllMenuTransaction(): Response<List<MenuResponseTransaction>>
 
-    @POST("menu")
+    @POST("menu/add")
     suspend fun createMenu(
         @Body createMenuDto: CreateMenuDto
-    ): Response<MenuResponseItem>
+    ): Response<BasicResponse>
 
     @GET("menu/{id}")
     suspend fun getDetailMenu(
@@ -58,10 +58,10 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<SesiResponseItem>
 
-    @POST("sesi")
+    @POST("sesi/add")
     suspend fun createSesi(
         @Body() createSesiDto: CreateSesiDto
-    ): Response<SesiResponseItem>
+    ): Response<BasicResponse>
 
     @GET("user/staffs")
     suspend fun getAllStaffs(): Response<List<EmployeeResponseItem>>
@@ -71,10 +71,10 @@ interface ApiService {
         @Body createEmployeeDto: CreateEmployeeDto
     ): Response<EmployeeResponseItem>
 
-    @POST("transaction")
+    @POST("transaction/add")
     suspend fun createTransaction(
         @Body createTransactionDto: CreateTransactionDto
-    ): Response<CreateTransactionDto>
+    ): Response<BasicResponse>
 
     @GET("transaction")
     suspend fun getTransactions(
