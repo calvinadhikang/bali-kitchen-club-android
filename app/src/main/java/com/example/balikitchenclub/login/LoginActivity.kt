@@ -56,7 +56,8 @@ fun Greeting(modifier: Modifier = Modifier) {
             .fillMaxSize()
     ){
         Text(
-            text = "Bali Kitchen Club"
+            text = "Bali Kitchen Club",
+            style = MaterialTheme.typography.titleSmall
         )
         OutlinedTextField(
             value = usernameValue,

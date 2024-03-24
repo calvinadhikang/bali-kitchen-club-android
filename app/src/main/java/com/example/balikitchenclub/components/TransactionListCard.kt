@@ -1,9 +1,12 @@
 package com.example.balikitchenclub.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -16,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.balikitchenclub.ui.theme.TonalBrown
 import com.example.balikitchenclub.utils.getContentPadding
 
 @Composable
@@ -25,19 +29,21 @@ fun TransactionListCard(
     status: String,
     onClick : () -> Unit
 ){
-    Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        modifier = Modifier.padding(4.dp).fillMaxWidth(),
-        onClick = { onClick() }
+    Column(
+        modifier = Modifier
+            .background(TonalBrown, shape = RoundedCornerShape(8.dp))
+            .padding(vertical = 4.dp, horizontal = 8.dp)
+            .fillMaxWidth()
+            .clickable {
+                onClick()
+            },
     ) {
-        Column(Modifier.padding(10.dp)){
-            Text("$customer", fontWeight = FontWeight.Bold)
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ){
-                Text("Rp $totalPrice", modifier = Modifier.weight(1F))
-                Text(status)
-            }
+        Text("$customer", fontWeight = FontWeight.Bold)
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ){
+            Text("Rp $totalPrice", modifier = Modifier.weight(1F))
+            Text(status)
         }
     }
 }

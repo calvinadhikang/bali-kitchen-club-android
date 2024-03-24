@@ -47,7 +47,7 @@ fun DetailSesiScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ){
         Box(Modifier.fillMaxWidth()){
-            Text("Tambah Menu", modifier = Modifier.align(Alignment.Center))
+            Text("Detail Sesi", modifier = Modifier.align(Alignment.Center))
         }
         if (viewModel.detailSesiName != ""){
             LazyColumn(
@@ -65,8 +65,8 @@ fun DetailSesiScreen(
                     TimePicker(state = endTime)
 
                     Spacer(modifier = Modifier.padding(10.dp))
-                    Button(onClick = { viewModel.createSesi(viewModel.detailSesiName, startTime.hour.toString(), startTime.minute.toString(), endTime.hour.toString(), endTime.minute.toString(), context) }) {
-                        Text("Tambah")
+                    Button(onClick = {  }) {
+                        Text("Update Sesi")
                     }
                 }
             }

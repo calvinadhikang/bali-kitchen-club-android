@@ -70,8 +70,6 @@ fun MenuScreen(
                     Spacer(Modifier.padding(4.dp))
                 }
             }
-            Text("Total Data ${menus.size}")
         }
-
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,7 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.balikitchenclub.components.ColumnWraper
 import com.example.balikitchenclub.screens.master.sesi.EmployeeViewModel
+import com.example.balikitchenclub.ui.theme.Brown
 
 @Composable()
 fun EmployeeScreen(
@@ -31,14 +34,19 @@ fun EmployeeScreen(
         viewModel.getAllStaffs()
     }
 
-    Column {
+    ColumnWraper {
         Row(Modifier.padding(bottom = 16.dp)) {
-            Text("List Karyawan", modifier = Modifier.weight(1F))
-            Text("Tambah Karyawan", modifier = Modifier.clickable{ navController.navigate("employee-add") }, color = Color.Blue)
+            Text("List Karyawan", modifier = Modifier.weight(1F), style = MaterialTheme.typography.titleSmall)
+            Text("Tambah Karyawan", modifier = Modifier.clickable{ navController.navigate("employee-add") }, color = Brown)
         }
         LazyColumn(){
             items(items = staffs){ staff ->
-                Text(staff.name)
+                Row(
+                    Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                ){
+                    Text(staff.name, Modifier.weight(1F))
+                    Text(staff.role)
+                }
                 HorizontalDivider()
             }
         }

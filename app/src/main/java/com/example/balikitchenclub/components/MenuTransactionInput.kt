@@ -1,5 +1,6 @@
 package com.example.balikitchenclub.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.balikitchenclub.ui.theme.TonalBrown
 import com.example.balikitchenclub.utils.getContentPadding
 
 @Composable
@@ -33,9 +35,8 @@ fun MenuTransactionInput(
     addQty: () -> Unit,
     subsQty: () -> Unit
 ) {
-    Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        modifier = Modifier.padding(4.dp)
+    Column(
+        modifier = Modifier.background(TonalBrown).padding(4.dp)
     ) {
         Row(
             Modifier
