@@ -60,7 +60,11 @@ class TransactionViewModel(): ViewModel() {
 
             if (response.isSuccessful){
                 val result = response.body()
-                sesiNow.value = result
+                if (result?.id != null){
+                    sesiNow.value = result
+                }else{
+                    sesiNow.value = null
+                }
             }
         }
     }

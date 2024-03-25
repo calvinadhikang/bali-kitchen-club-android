@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.balikitchenclub.components.ColumnWraper
 import com.example.balikitchenclub.components.MenuTransactionInput
+import com.example.balikitchenclub.ui.theme.Brown
 import com.example.balikitchenclub.ui.theme.LightGreen
 import com.example.balikitchenclub.ui.theme.LightRed
 import com.example.balikitchenclub.utils.getContentPadding
@@ -58,7 +61,7 @@ fun AddTransactionScreen(
             Column(
                 modifier = Modifier
                     .background(
-                        if (sesiNow != null) LightGreen else LightRed,
+                        if (sesiNow?.name != null) LightGreen else LightRed,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .fillMaxWidth()
@@ -87,7 +90,7 @@ fun AddTransactionScreen(
             }
         }
 
-        OutlinedButton(
+        Button(
             onClick = {
                 viewModel.setConfirmedMenu()
                 navController.navigate("transaction-confirmation")
@@ -96,12 +99,12 @@ fun AddTransactionScreen(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             shape = RoundedCornerShape(8.dp),
-            enabled = sesiNow != null
+            enabled = sesiNow?.name != null,
         ) {
-            if (sesiNow != null){
+            if (sesiNow?.name != null){
                 Text("Buat Transaksi", modifier = Modifier.weight(1F))
                 Text("${viewModel.totalItem} items - Rp ${viewModel.totalPrice}")
-            }else if (sesiNow == null){
+            }else {
                 Text("Harus Ada Sesi Aktif", color = Color.Red)
             }
         }
