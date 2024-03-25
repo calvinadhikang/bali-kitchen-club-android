@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.AddCircleOutline
@@ -21,8 +22,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.balikitchenclub.ui.theme.LightRed
 import com.example.balikitchenclub.ui.theme.TonalBrown
 import com.example.balikitchenclub.utils.getContentPadding
 
@@ -36,12 +39,12 @@ fun MenuTransactionInput(
     subsQty: () -> Unit
 ) {
     Column(
-        modifier = Modifier.background(TonalBrown).padding(4.dp)
+        modifier = Modifier.background(if (stock.toInt() <= 0) LightRed else TonalBrown, RoundedCornerShape(8.dp)).padding(4.dp)
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(horizontal = getContentPadding(), vertical = 4.dp),
+                .padding(horizontal = 4.dp,vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
@@ -49,7 +52,11 @@ fun MenuTransactionInput(
             ) {
                 Text("$name", fontWeight = FontWeight.Bold)
                 Text("Rp $price")
-                Text("Tersisa : $stock Pcs")
+                if (stock.toInt() > 0){
+                    Text("Tersedia : $stock Pcs")
+                }else{
+                    Text(text = "Tidak Tersedia / Stock Habis", color = Color.Red)
+                }
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -58,7 +65,7 @@ fun MenuTransactionInput(
                     Icon(imageVector = Icons.Filled.RemoveCircleOutline, contentDescription = "")
                 }
                 Text(qty)
-                IconButton(onClick = { addQty() }, enabled = qty.toInt() <= 0 || qty.toInt() != stock.toInt()) {
+                IconButton(onClick = { addQty() }, enabled = stock.toInt() != 0 && (qty.toInt() <= 0 || qty.toInt() != stock.toInt())) {
                     Icon(imageVector = Icons.Filled.AddCircleOutline, contentDescription = "")
                 }
             }

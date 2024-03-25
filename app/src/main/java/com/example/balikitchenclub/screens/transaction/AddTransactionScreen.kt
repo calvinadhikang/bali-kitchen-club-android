@@ -89,7 +89,7 @@ fun AddTransactionScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = getContentPadding(), vertical = 8.dp),
+                .padding(vertical = 8.dp),
             shape = RoundedCornerShape(8.dp),
             enabled = sesiNow != null
         ) {

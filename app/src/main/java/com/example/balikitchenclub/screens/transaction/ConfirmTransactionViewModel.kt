@@ -14,6 +14,7 @@ import com.example.balikitchenclub.network.ApiClient
 import com.example.balikitchenclub.network.dro.MenuResponseTransaction
 import com.example.balikitchenclub.network.dto.CreateTransactionDetailDto
 import com.example.balikitchenclub.network.dto.CreateTransactionDto
+import com.example.balikitchenclub.utils.UserPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -35,8 +36,9 @@ class ConfirmTransactionViewModel() : ViewModel() {
     }
 
 
-    fun createTransaction(customer: String, status: Boolean, ifSuccess: () -> Unit){
+    fun createTransaction(context: Context, customer: String, status: Boolean, ifSuccess: () -> Unit){
         viewModelScope.launch {
+            val user = UserPreferences(context).getUser()
             val api = ApiClient.apiService
 
             val detailsList = mutableListOf<CreateTransactionDetailDto>()
@@ -59,7 +61,7 @@ class ConfirmTransactionViewModel() : ViewModel() {
                 grand_total = total,
                 details = detailsList,
                 status = status,
-                employee = 1
+                employee = user!!.id
             )
 
             val response = withContext(Dispatchers.IO){

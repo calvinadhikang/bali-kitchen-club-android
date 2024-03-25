@@ -33,8 +33,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -54,6 +62,8 @@ import com.example.balikitchenclub.screens.transaction.ConfirmationTransactionSc
 import com.example.balikitchenclub.screens.transaction.DetailTransactionScreen
 import com.example.balikitchenclub.screens.transaction.TransactionScreen
 import com.example.balikitchenclub.ui.theme.BaliKitchenClubTheme
+import com.example.balikitchenclub.utils.User
+import com.example.balikitchenclub.utils.UserPreferences
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -147,7 +157,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 }
                 
                 NavHost(navController, startDestination = "home"){
-                    composable("home"){ Text("Home") }
+                    composable("home"){ HomeScreen() }
                     composable("menu"){ MenuScreen(navController = navController) }
                     composable("menu-add"){ AddMenuScreen() }
                     composable("menu-detail/{menuId}") { backStackEntry -> DetailMenuScreen(id = backStackEntry.arguments?.getString("menuId")) }
@@ -165,6 +175,24 @@ fun MainScreen(modifier: Modifier = Modifier) {
         }
     }
 }
+@Composable
+fun HomeScreen(
+    viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+){
+    val context = LocalContext.current
+    val user by viewModel.user
+
+    LaunchedEffect(Unit){
+        viewModel.getUser(context)
+    }
+
+    Column(){
+        Text("Welcome,", color = Color.Gray,)
+        if (user != null){
+            Text(text = user, style = MaterialTheme.typography.titleSmall)
+        }
+    }
+}
 
 @Composable
 fun DrawerContent(navController: NavController, closeDrawer: () -> Unit){
@@ -172,38 +200,48 @@ fun DrawerContent(navController: NavController, closeDrawer: () -> Unit){
         modifier = Modifier.padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Text("Drawer")
+        Text("Navigasi", fontWeight = FontWeight.SemiBold)
         Spacer(modifier = Modifier.padding(8.dp))
         Text("Home", modifier = Modifier
             .fillMaxWidth()
             .clickable {
                 navController.navigate("home")
                 closeDrawer()
-            })
+            }
+            .padding(vertical = 2.dp)
+        )
         Text("Menu", modifier = Modifier
             .fillMaxWidth()
             .clickable {
                 navController.navigate("menu")
                 closeDrawer()
-            })
+            }
+            .padding(vertical = 2.dp)
+        )
         Text("Sesi", modifier = Modifier
             .fillMaxWidth()
             .clickable {
                 navController.navigate("sesi")
                 closeDrawer()
-            })
+            }
+            .padding(vertical = 2.dp)
+        )
         Text("Karyawan", modifier = Modifier
             .fillMaxWidth()
             .clickable {
                 navController.navigate("employee")
                 closeDrawer()
-            })
+            }
+            .padding(vertical = 2.dp)
+        )
         Text("Transaksi", modifier = Modifier
             .fillMaxWidth()
             .clickable {
                 navController.navigate("transaction")
                 closeDrawer()
-            })
+            }
+            .padding(vertical = 2.dp)
+        )
     }
 }
 

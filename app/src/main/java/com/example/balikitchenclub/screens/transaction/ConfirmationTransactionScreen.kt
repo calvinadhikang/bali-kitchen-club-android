@@ -1,6 +1,7 @@
 package com.example.balikitchenclub.screens.transaction
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -37,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.balikitchenclub.components.ColumnWraper
+import com.example.balikitchenclub.ui.theme.TonalBrown
 import com.example.balikitchenclub.utils.thousandDelimiter
 
 @Composable
@@ -55,20 +58,29 @@ fun ConfirmationTransactionScreen(
 
     Column(
     ) {
-        Text("Konfirmasi Pesanan", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+        Text("Konfirmasi Pesanan", modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp), textAlign = TextAlign.Center, style = MaterialTheme.typography.titleSmall)
         ColumnWraper(
             modifier = Modifier.weight(1F)
         ){
-            Text(text = "Data Pesanan", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+            Text(text = "Data Pesanan", fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.padding(4.dp))
             LazyColumn(
                 modifier = Modifier
                     .weight(1F)
             ){
                 items(items = menus){ menu ->
-                    Text(text = menu.name, fontWeight = FontWeight.Bold)
-                    Text("${menu.price} x ${menu.qty} = Rp ${menu.qty * menu.price}")
-                    HorizontalDivider()
+                    Column(
+                        Modifier
+                            .background(TonalBrown, RoundedCornerShape(8.dp))
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                    ){
+                        Text(text = menu.name, fontWeight = FontWeight.SemiBold)
+                        Text("${menu.price} x ${menu.qty} = Rp ${menu.qty * menu.price}")
+                    }
+                    Spacer(modifier = Modifier.padding(4.dp))
                 }
             }
             Spacer(modifier = Modifier.padding(4.dp))
@@ -98,7 +110,7 @@ fun ConfirmationTransactionScreen(
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Column(modifier = Modifier.weight(1f)) {
-                    Text("Status Pembayaran")
+                    Text("Status Pembayaran", fontWeight = FontWeight.SemiBold)
                     Text(
                         text = if (paid) "Lunas" else "Belum Lunas",
                         color = if (paid) Color.Green else Color.Red
@@ -116,6 +128,7 @@ fun ConfirmationTransactionScreen(
         Button(
             onClick = {
                 viewModel.createTransaction(
+                    context = context,
                     customer = name,
                     status = paid,
                     ifSuccess = {

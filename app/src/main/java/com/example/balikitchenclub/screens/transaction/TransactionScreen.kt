@@ -129,6 +129,7 @@ fun TransactionScreen(
                     TransactionListCard(customer = transaction.customer, totalPrice = thousandDelimiter(transaction.grand_total), status = transaction.status ) {
                         navController.navigate("transaction-detail/${transaction.id}")
                     }
+                    Spacer(Modifier.padding(4.dp))
                 }
                 item {
                     Spacer(Modifier.padding(8.dp))

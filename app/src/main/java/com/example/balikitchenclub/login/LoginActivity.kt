@@ -9,17 +9,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.balikitchenclub.main.MainActivity
@@ -44,10 +47,18 @@ class LoginActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting(modifier: Modifier = Modifier) {
+fun Greeting(
+    viewModel: LoginViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
     val context = LocalContext.current
-    var usernameValue by rememberSaveable { mutableStateOf("") }
-    var passwordValue by rememberSaveable { mutableStateOf("") }
+    val isLoading by viewModel.isLoading
+    val textError by viewModel.message
+    var usernameValue by viewModel.username
+    var passwordValue by viewModel.password
+
+    LaunchedEffect(Unit){
+        viewModel.checkUser(context)
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,34 +70,40 @@ fun Greeting(modifier: Modifier = Modifier) {
             text = "Bali Kitchen Club",
             style = MaterialTheme.typography.titleSmall
         )
-        OutlinedTextField(
-            value = usernameValue,
-            onValueChange = {newValue ->
-                usernameValue = newValue
-            },
-            label = {
-                Text("Username")
-            }
-        )
-        OutlinedTextField(
-            value = passwordValue,
-            onValueChange = {newValue ->
-                passwordValue = newValue
-            },
-            label = {
-                Text("Password")
-            }
-        )
+
+        if (isLoading){
+            LinearProgressIndicator()
+        }else{
+            OutlinedTextField(
+                value = usernameValue,
+                onValueChange = {newValue ->
+                    usernameValue = newValue
+                },
+                label = {
+                    Text("Username")
+                }
+            )
+            OutlinedTextField(
+                value = passwordValue,
+                onValueChange = {newValue ->
+                    passwordValue = newValue
+                },
+                label = {
+                    Text("Password")
+                }
+            )
+        }
+
         Button(
             onClick = {
-                val intent = Intent(context, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                context.startActivity(intent)
+                viewModel.login(context)
             },
             content = {
                 Text("Login")
-            }
+            },
+            enabled = !isLoading
         )
+        Text(textError, color = Color.Red)
     }
 }
 

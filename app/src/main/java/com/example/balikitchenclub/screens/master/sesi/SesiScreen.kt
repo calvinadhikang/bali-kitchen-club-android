@@ -57,7 +57,7 @@ fun SesiScreen(navController: NavController, viewModel: SesiViewModel = androidx
                         modifier = Modifier.weight(1F)
                     ) {
                         Text(sesi.name, fontWeight = FontWeight.SemiBold)
-                        Text("${sesi.start} - ${sesi.end}")
+                        Text("${sesi.start} - ${sesi.end} WIB")
                     }
                     if (sesiNow?.name == sesi.name){
                         Text("Aktif", modifier = Modifier.padding(horizontal = 8.dp))

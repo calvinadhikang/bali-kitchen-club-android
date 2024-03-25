@@ -68,7 +68,7 @@ fun DetailTransactionScreen(
             )
         }
         ColumnWraper {
-            Text("Daftar Transaksi", fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(bottom = 4.dp))
+            Text("Daftar Pesanan", fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(bottom = 4.dp))
             if (transaction?.details != null){
                 LazyColumn {
                     items(items = transaction!!.details, key = {it -> it.id}){ menu ->
@@ -87,6 +87,7 @@ fun DetailTransactionScreen(
                             }
                             Text("Rp ${thousandDelimiter(menu.subtotal)}")
                         }
+                        Spacer(Modifier.padding(4.dp))
                     }
                 }
             }

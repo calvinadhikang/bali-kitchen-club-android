@@ -9,6 +9,7 @@ import com.example.balikitchenclub.network.dro.SesiResponseItem
 import com.example.balikitchenclub.network.dro.StockDro
 import com.example.balikitchenclub.network.dro.TransactionListDro
 import com.example.balikitchenclub.network.dro.TransactionResponseItem
+import com.example.balikitchenclub.network.dto.AuthDto
 import com.example.balikitchenclub.network.dto.CreateEmployeeDto
 import com.example.balikitchenclub.network.dto.CreateMenuDto
 import com.example.balikitchenclub.network.dto.CreateSesiDto
@@ -24,8 +25,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @POST("login")
-    suspend fun login()
+    @POST("user/login")
+    suspend fun login(
+        @Body authDto: AuthDto
+    ): Response<EmployeeResponseItem>
 
     @GET("menu")
     suspend fun getAllMenus(): Response<List<MenuResponseItem>>
