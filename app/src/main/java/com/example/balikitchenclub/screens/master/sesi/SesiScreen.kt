@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,24 +44,36 @@ fun SesiScreen(navController: NavController, viewModel: SesiViewModel = androidx
             Text("List Sesi", modifier = Modifier.weight(1F), style = MaterialTheme.typography.titleSmall)
             Text("Tambah Sesi", modifier = Modifier.clickable{ navController.navigate("sesi-add") }, color = Brown)
         }
-        LazyColumn(){
-            items(items = sesis, key = { item -> item.id }){sesi ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(if (sesiNow?.name == sesi.name) TonalBrown else Color.Transparent, shape = RoundedCornerShape(8.dp))
-                        .clickable { navController.navigate("sesi-detail/${sesi.id}") }
-                        .padding(vertical = 4.dp, horizontal = 8.dp)
-                ){
-                    Column(
-                        modifier = Modifier.weight(1F)
-                    ) {
-                        Text(sesi.name, fontWeight = FontWeight.SemiBold)
-                        Text("${sesi.start} - ${sesi.end} WIB")
-                    }
-                    if (sesiNow?.name == sesi.name){
-                        Text("Aktif", modifier = Modifier.padding(horizontal = 8.dp))
+
+        if (viewModel.loadingSesis){
+            LinearProgressIndicator(Modifier.fillMaxWidth())
+        }
+
+        if (sesis.isEmpty()){
+            Text("Sesi belum ditambahkan, Tambahin yuk !")
+        }else{
+            LazyColumn(){
+                items(items = sesis, key = { item -> item.id }){sesi ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                if (sesiNow?.name == sesi.name) TonalBrown else Color.Transparent,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clickable { navController.navigate("sesi-detail/${sesi.id}") }
+                            .padding(vertical = 4.dp, horizontal = 8.dp)
+                    ){
+                        Column(
+                            modifier = Modifier.weight(1F)
+                        ) {
+                            Text(sesi.name, fontWeight = FontWeight.SemiBold)
+                            Text("${sesi.start} - ${sesi.end} WIB")
+                        }
+                        if (sesiNow?.name == sesi.name){
+                            Text("Aktif", modifier = Modifier.padding(horizontal = 8.dp))
+                        }
                     }
                 }
             }

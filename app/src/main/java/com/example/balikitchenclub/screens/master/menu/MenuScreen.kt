@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,20 +55,29 @@ fun MenuScreen(
                 Text("List Menu", modifier = Modifier.weight(1F), style = MaterialTheme.typography.titleSmall)
                 Text("Tambah Menu", modifier = Modifier.clickable{ navController.navigate("menu-add") }, color = Brown)
             }
-            LazyColumn(){
-                items(items = menus, key = { item -> item.id }){menu ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(TonalBrown, shape = RoundedCornerShape(8.dp))
-                            .padding(vertical = 4.dp, horizontal = 8.dp)
-                            .clickable { navController.navigate("menu-detail/${menu.id}") }
-                    ) {
-                        Text(menu.name, fontWeight = FontWeight.SemiBold)
-                        Text("Stok: ${menu.stock}")
-                        Text("Rp ${thousandDelimiter(menu.price)}")
+
+            if (viewModel.loadingMenu){
+                LinearProgressIndicator(Modifier.fillMaxWidth())
+            }
+
+            if (menus.isEmpty()){
+                Text("Menu belum ditambahkan, tambahin yuk !")
+            }else{
+                LazyColumn(){
+                    items(items = menus, key = { item -> item.id }){menu ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(TonalBrown, shape = RoundedCornerShape(8.dp))
+                                .padding(vertical = 4.dp, horizontal = 8.dp)
+                                .clickable { navController.navigate("menu-detail/${menu.id}") }
+                        ) {
+                            Text(menu.name, fontWeight = FontWeight.SemiBold)
+                            Text("Stok: ${menu.stock}")
+                            Text("Rp ${thousandDelimiter(menu.price)}")
+                        }
+                        Spacer(Modifier.padding(4.dp))
                     }
-                    Spacer(Modifier.padding(4.dp))
                 }
             }
         }

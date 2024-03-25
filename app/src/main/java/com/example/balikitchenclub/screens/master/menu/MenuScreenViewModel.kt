@@ -29,10 +29,13 @@ class MenuScreenViewModel : ViewModel(){
     var detailPrice by mutableStateOf(0)
     var detailStock by mutableStateOf(0)
 
+    var loadingMenu by mutableStateOf(false)
+
     var data: MutableStateFlow<List<MenuResponseItem>> = MutableStateFlow(mutableStateListOf())
 
     fun getAllMenus(){
         viewModelScope.launch {
+            loadingMenu = true
             try {
                 val api = ApiClient.apiService
                 val response = withContext(Dispatchers.IO) {
@@ -53,6 +56,7 @@ class MenuScreenViewModel : ViewModel(){
             } catch (e: Exception) {
                 Log.e("EXCEPTION", e.message.toString())
             }
+            loadingMenu = false
         }
     }
 

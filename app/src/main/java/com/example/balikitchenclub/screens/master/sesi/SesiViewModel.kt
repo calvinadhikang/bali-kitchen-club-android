@@ -27,14 +27,18 @@ class SesiViewModel : ViewModel(){
     private val _sesiNow = MutableLiveData<SesiResponseItem>()
     val sesiNow: LiveData<SesiResponseItem> = _sesiNow
 
+    var detailSesiId by mutableStateOf(0)
     var detailSesiName by mutableStateOf("")
     var detailStartHour by mutableStateOf(0)
     var detailStartMinute by mutableStateOf(0)
     var detailEndHour by mutableStateOf(0)
     var detailEndMinute by mutableStateOf(0)
 
+    var loadingSesis by mutableStateOf(true)
+
     fun getAllSesi(){
         viewModelScope.launch {
+            loadingSesis = true
             try {
                 val api = ApiClient.apiService
                 val response = withContext(Dispatchers.IO){
@@ -49,6 +53,7 @@ class SesiViewModel : ViewModel(){
             } catch (e: Exception){
 
             }
+            loadingSesis = false
         }
     }
 
@@ -67,6 +72,25 @@ class SesiViewModel : ViewModel(){
 
             } catch (e: Exception){
 
+            }
+        }
+    }
+
+    fun updateSesi(onSuccess: () -> Unit){
+        viewModelScope.launch {
+            val api = ApiClient.apiService
+            val response = withContext(Dispatchers.IO){
+                api.updateSesi(
+                    id = detailSesiId,
+                    createSesiDto = CreateSesiDto(
+                        detailSesiName,
+                        "${detailStartHour}:${detailStartMinute}",
+                        "${detailEndHour}:${detailEndMinute}"
+                    )
+                )
+            }
+            if (response.isSuccessful){
+                onSuccess()
             }
         }
     }
@@ -99,6 +123,7 @@ class SesiViewModel : ViewModel(){
             if (response.isSuccessful){
                 val result = response.body()!!
                 detailSesiName = result.name
+                detailSesiId = result.id
 
                 var start = result.start.split(":")
                 detailStartHour = start[0].toInt()

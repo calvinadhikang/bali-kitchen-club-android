@@ -1,5 +1,6 @@
 package com.example.balikitchenclub.screens.master.sesi
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -56,6 +57,7 @@ fun DetailSesiScreen(
             ){
                 item {
                     OutlinedTextField(value = viewModel.detailSesiName, onValueChange = { newValue -> viewModel.detailSesiName = newValue }, label = { Text("Nama") })
+
                     Spacer(modifier = Modifier.padding(10.dp))
                     Text("Waktu Mulai : ${viewModel.detailStartHour}:${viewModel.detailStartMinute}")
                     TimePicker(state = startTime)
@@ -65,7 +67,11 @@ fun DetailSesiScreen(
                     TimePicker(state = endTime)
 
                     Spacer(modifier = Modifier.padding(10.dp))
-                    Button(onClick = {  }) {
+                    Button(onClick = {
+                        viewModel.updateSesi(onSuccess = {
+                            Toast.makeText(context, "Berhasil Update Sesi ${viewModel.detailSesiName}", Toast.LENGTH_SHORT).show()
+                        }) }
+                    ) {
                         Text("Update Sesi")
                     }
                 }

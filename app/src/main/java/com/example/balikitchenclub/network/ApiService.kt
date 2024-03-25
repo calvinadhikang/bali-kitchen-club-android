@@ -63,6 +63,12 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<SesiResponseItem>
 
+    @PATCH("sesi/update/{id}")
+    suspend fun updateSesi(
+        @Path("id") id:Int,
+        @Body() createSesiDto: CreateSesiDto
+    ): Response<BasicResponse>
+
     @POST("sesi/add")
     suspend fun createSesi(
         @Body() createSesiDto: CreateSesiDto
