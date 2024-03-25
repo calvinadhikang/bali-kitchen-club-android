@@ -48,21 +48,19 @@ class TransactionViewModel(): ViewModel() {
     var timeSelected = mutableStateOf("today")
     var totalEarnings = mutableStateOf(0)
 
+    var loadingTransaction = mutableStateOf(false)
+    var loadingMenus = mutableStateOf(false)
+
     fun getSesiNow(){
         viewModelScope.launch {
-            try {
-                val api = ApiClient.apiService
-                val response = withContext(Dispatchers.IO){
-                    api.getSesiNow()
-                }
+            val api = ApiClient.apiService
+            val response = withContext(Dispatchers.IO){
+                api.getSesiNow()
+            }
 
-                if (response.isSuccessful){
-                    val result = response.body()
-                    sesiNow.value = result
-                }
-
-            } catch (e: Exception){
-
+            if (response.isSuccessful){
+                val result = response.body()
+                sesiNow.value = result
             }
         }
     }
@@ -107,8 +105,10 @@ class TransactionViewModel(): ViewModel() {
             Log.e("CHECK", confirmMenus.value.toString())
         }
     }
+
     fun getAllTransactions(){
         viewModelScope.launch {
+            loadingTransaction.value = true
             val api = ApiClient.apiService
             val response = withContext(Dispatchers.IO){
                 api.getTransactions(time = timeSelected.value, sesi = sesiSelected.value)
@@ -120,6 +120,8 @@ class TransactionViewModel(): ViewModel() {
                 _transactions.value = result!!.data
                 totalEarnings.value = result!!.total_earning
             }
+
+            loadingTransaction.value = false
         }
     }
 
@@ -148,6 +150,7 @@ class TransactionViewModel(): ViewModel() {
 
     fun getAllMenuTransaction(){
         viewModelScope.launch {
+            loadingMenus.value = true
             val api = ApiClient.apiService
             val response = withContext(Dispatchers.IO){
                 api.getAllMenuTransaction()
@@ -157,6 +160,7 @@ class TransactionViewModel(): ViewModel() {
                 val result = response.body()!!
                 _menus.value = result
             }
+            loadingMenus.value = false
         }
     }
 

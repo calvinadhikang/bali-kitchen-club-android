@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -108,6 +109,7 @@ fun TransactionScreen(
                 )
             }
         }
+
         ColumnWraper {
             Row(Modifier.padding(bottom = 16.dp)) {
                 Text("Data Transaksi", modifier = Modifier.weight(1F), style = MaterialTheme.typography.titleSmall)
@@ -119,22 +121,26 @@ fun TransactionScreen(
                     color = Brown,
                 )
             }
-            LazyColumn(){
-                if (transactions.isEmpty()){
+            if (viewModel.loadingTransaction.value){
+                LinearProgressIndicator(Modifier.fillMaxWidth())
+            }else{
+                LazyColumn {
+                    if (transactions.isEmpty()){
+                        item {
+                            Text("Tidak ada data...")
+                        }
+                    }
+                    items(items = transactions){ transaction ->
+                        TransactionListCard(customer = transaction.customer, totalPrice = thousandDelimiter(transaction.grand_total), status = transaction.status ) {
+                            navController.navigate("transaction-detail/${transaction.id}")
+                        }
+                        Spacer(Modifier.padding(4.dp))
+                    }
                     item {
-                        Text("Tidak ada data...")
+                        Spacer(Modifier.padding(8.dp))
+                        Text("Total Data ${transactions?.size}")
+                        Text("Total Uang Diterima : Rp ${thousandDelimiter(viewModel.totalEarnings.value)}")
                     }
-                }
-                items(items = transactions){ transaction ->
-                    TransactionListCard(customer = transaction.customer, totalPrice = thousandDelimiter(transaction.grand_total), status = transaction.status ) {
-                        navController.navigate("transaction-detail/${transaction.id}")
-                    }
-                    Spacer(Modifier.padding(4.dp))
-                }
-                item {
-                    Spacer(Modifier.padding(8.dp))
-                    Text("Total Data ${transactions?.size}")
-                    Text("Total Uang Diterima : Rp ${thousandDelimiter(viewModel.totalEarnings.value)}")
                 }
             }
         }

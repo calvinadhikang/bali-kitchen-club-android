@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -71,13 +72,17 @@ fun AddTransactionScreen(
         ColumnWraper(
             Modifier.weight(1F)
         ) {
-            LazyColumn {
-                items(items = menus, key = { it.id }){ menu ->
-                    MenuTransactionInput(name = menu.name, stock = menu.stock.toString(), price = menu.price.toString(), qty = menu.qty.toString(),
-                        addQty = { viewModel.mutateQty(1, menu.id) },
-                        subsQty = { viewModel.mutateQty(-1, menu.id) }
-                    )
-                    Spacer(Modifier.padding(4.dp))
+            if (viewModel.loadingMenus.value){
+                LinearProgressIndicator(Modifier.fillMaxWidth())
+            }else{
+                LazyColumn {
+                    items(items = menus, key = { it.id }){ menu ->
+                        MenuTransactionInput(name = menu.name, stock = menu.stock.toString(), price = menu.price.toString(), qty = menu.qty.toString(),
+                            addQty = { viewModel.mutateQty(1, menu.id) },
+                            subsQty = { viewModel.mutateQty(-1, menu.id) }
+                        )
+                        Spacer(Modifier.padding(4.dp))
+                    }
                 }
             }
         }
