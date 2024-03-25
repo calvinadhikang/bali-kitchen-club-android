@@ -22,13 +22,4 @@ class HomeViewModel(): ViewModel() {
             user.value = userPreferences.getUser()!!.name
         }
     }
-
-    fun logout(context: Context){
-        viewModelScope.launch {
-            UserPreferences(context).clearUser()
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            context.startActivity(intent)
-        }
-    }
 }
