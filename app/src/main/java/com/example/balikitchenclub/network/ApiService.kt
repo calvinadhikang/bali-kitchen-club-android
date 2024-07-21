@@ -1,6 +1,6 @@
 package com.example.balikitchenclub.network
 
-import android.view.SurfaceControl.Transaction
+import com.example.balikitchenclub.network.dro.AuthDro
 import com.example.balikitchenclub.network.dro.BasicResponse
 import com.example.balikitchenclub.network.dro.EmployeeResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseItem
@@ -25,10 +25,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @POST("user/login")
+    @POST("auth/login")
     suspend fun login(
         @Body authDto: AuthDto
-    ): Response<EmployeeResponseItem>
+    ): Response<AuthDro>
 
     @GET("menu")
     suspend fun getAllMenus(): Response<List<MenuResponseItem>>

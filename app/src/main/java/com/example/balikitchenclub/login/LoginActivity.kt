@@ -2,12 +2,21 @@ package com.example.balikitchenclub.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.balikitchenclub.main.MainActivity
 import com.example.balikitchenclub.ui.theme.BaliKitchenClubTheme
 
@@ -70,10 +81,12 @@ fun Greeting(
             text = "Bali Kitchen Club",
             style = MaterialTheme.typography.titleSmall
         )
-
-        if (isLoading){
-            LinearProgressIndicator()
-        }else{
+        Spacer(modifier = Modifier.padding(8.dp))
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth(0.8F)
+        ) {
             OutlinedTextField(
                 value = usernameValue,
                 onValueChange = {newValue ->
@@ -81,7 +94,10 @@ fun Greeting(
                 },
                 label = {
                     Text("Username")
-                }
+                },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !isLoading
             )
             OutlinedTextField(
                 value = passwordValue,
@@ -90,20 +106,31 @@ fun Greeting(
                 },
                 label = {
                     Text("Password")
-                }
+                },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !isLoading
+            )
+            Spacer(modifier = Modifier.padding(8.dp))
+            Text(textError, color = Color.Red, modifier = Modifier.fillMaxWidth())
+
+            if (isLoading){
+                CircularProgressIndicator(Modifier.padding(8.dp))
+            }
+
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    viewModel.login(context)
+                },
+                content = {
+
+                    Text("Login")
+                },
+                enabled = !isLoading
             )
         }
 
-        Button(
-            onClick = {
-                viewModel.login(context)
-            },
-            content = {
-                Text("Login")
-            },
-            enabled = !isLoading
-        )
-        Text(textError, color = Color.Red)
     }
 }
 

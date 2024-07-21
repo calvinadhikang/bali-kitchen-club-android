@@ -2,6 +2,7 @@ package com.example.balikitchenclub.login
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -22,7 +23,7 @@ class LoginViewModel() : ViewModel() {
     var message = mutableStateOf("")
 
     fun checkUser(context: Context){
-        viewModelScope.launch {
+        try {
             val userPreferences = UserPreferences(context)
             val user = userPreferences.getUser()
             if (user != null){
@@ -30,30 +31,47 @@ class LoginViewModel() : ViewModel() {
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 context.startActivity(intent)
             }
+        } catch (ex: Exception) {
+            Log.e("Err", ex.message!!)
         }
     }
 
-    fun login(context: Context){
+    fun login(context: Context) {
         viewModelScope.launch {
-            isLoading.value = true
-            val api = ApiClient.apiService
-            val response = withContext(Dispatchers.IO){
-                val authDto = AuthDto(username.value, password.value)
-                api.login(authDto)
-            }
+            try {
+                isLoading.value = true
 
-            if (response.isSuccessful){
-                val data = response.body()!!
-                val userPref = UserPreferences(context)
-                userPref.saveUser(data.name, data.username, data.password, data.id, data.role)
+                val api = ApiClient.apiService
+                val response = withContext(Dispatchers.IO){
+                    val authDto = AuthDto(username.value, password.value)
+                    api.login(authDto)
+                }
 
-                val intent = Intent(context, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                context.startActivity(intent)
-            }else{
-                message.value = "Login Gagal !"
+                if (response.isSuccessful){
+                    val result = response.body()!!
+
+                    if (result.error){
+                        message.value = result.message
+                        return@launch
+                    }
+
+                    val user = result.data
+                    val userPref = UserPreferences(context)
+                    if (user != null) {
+                        userPref.saveUser(user.name, user.username, user.password, user.id, user.role)
+                    }
+
+                    val intent = Intent(context, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    context.startActivity(intent)
+                }else{
+                    message.value = "Login Gagal !"
+                }
+            } catch (ex: Exception) {
+                Log.e("Err", ex.message!!)
+            } finally {
+                isLoading.value = false
             }
-            isLoading.value = false
         }
     }
 }

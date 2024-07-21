@@ -17,9 +17,7 @@ class HomeViewModel(): ViewModel() {
     var user = mutableStateOf("")
 
     fun getUser(context: Context){
-        viewModelScope.launch {
-            val userPreferences = UserPreferences(context)
-            user.value = userPreferences.getUser()!!.name
-        }
+        val userPreferences = UserPreferences(context)
+        user.value = userPreferences.getUser()!!.name
     }
 }

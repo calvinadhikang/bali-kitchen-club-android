@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 //    private const val BASE_URL = "http://10.0.2.2:3000/"
-    private const val BASE_URL = "https://api.bkc.nanaspos.masuk.id/"
+    private const val BASE_URL = "https://balikitchenclub.vercel.app/api/"
 
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
