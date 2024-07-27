@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -63,21 +64,24 @@ fun DetailMenuScreen(
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ){
-        ColumnWraper {
-            Text("Detail Menu", modifier = Modifier.padding(bottom = 16.dp), style = MaterialTheme.typography.titleSmall)
-            OutlinedTextField(value = viewModel.detailName, onValueChange = { newValue -> viewModel.detailName = newValue }, label = { Text("Nama") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = viewModel.detailPrice.toString(), onValueChange = { newValue -> viewModel.detailPrice = checkDigitInput(newValue) }, label = { Text("Price") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())
-            Row(){
-                Text("Jumlah Stock:", fontWeight = FontWeight.Medium)
-                Text(viewModel.detailStock.toString())
+        if (viewModel.isLoading && viewModel.detailName == "") {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator()
             }
-            Button(onClick = { viewModel.updateMenu(id!!.toInt(), context) }, modifier = Modifier.fillMaxWidth()) {
-                Text("Update")
-            }
-        }
-        if (!id.isNullOrEmpty()){
+        } else {
             ColumnWraper {
-                StockMutationList(menuId = id.toInt(), onClick = { viewModel.getDetailMenu(id.toInt()) })
+                Text("Detail Menu", modifier = Modifier.padding(bottom = 16.dp), style = MaterialTheme.typography.titleSmall)
+                OutlinedTextField(value = viewModel.detailName, onValueChange = { newValue -> viewModel.detailName = newValue }, label = { Text("Nama") }, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = viewModel.detailPrice.toString(), onValueChange = { newValue -> viewModel.detailPrice = checkDigitInput(newValue) }, label = { Text("Price") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = viewModel.detailStock.toString(), readOnly = true, onValueChange = {}, label = { Text("Stock") }, modifier = Modifier.fillMaxWidth())
+                Button(onClick = { viewModel.updateMenu(id!!.toInt(), context) }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+                    Text("Update")
+                }
+            }
+            ColumnWraper {
+                StockMutationList(menuId = id!!.toInt(), onClick = { viewModel.getDetailMenu(id.toInt()) })
             }
         }
     }

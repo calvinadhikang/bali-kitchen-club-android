@@ -56,7 +56,7 @@ fun MenuScreen(
                 Text("Tambah Menu", modifier = Modifier.clickable{ navController.navigate("menu-add") }, color = Brown)
             }
 
-            if (viewModel.loadingMenu){
+            if (viewModel.isLoading){
                 LinearProgressIndicator(Modifier.fillMaxWidth())
             }
 

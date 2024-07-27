@@ -1,6 +1,7 @@
 package com.example.balikitchenclub.screens.master.menu
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,10 +54,22 @@ fun AddMenuScreen(
         Text("Tambah Menu", modifier = Modifier.padding(bottom = 16.dp), style = MaterialTheme.typography.titleSmall)
         OutlinedTextField(value = name, onValueChange = { newValue -> name = newValue }, label = { Text("Nama") }, modifier = Modifier.fillMaxWidth())
         OutlinedTextField(value = price.toString(), onValueChange = { newValue -> price = checkDigitInput(newValue) }, label = { Text("Harga") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())
-        Button(onClick = { viewModel.createMenu(name, price, context) }) {
-            Text("Tambah")
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ){
+            Button(
+                onClick = {
+                    viewModel.createMenu(name, price, context)
+                },
+                enabled = name != "" && price > 0 && !viewModel.isLoading,
+                modifier = Modifier.padding(top = 8.dp)
+            ) {
+                Text("Tambah")
+            }
+            if (viewModel.isLoading) {
+                CircularProgressIndicator()
+            }
         }
     }
 }
-
-

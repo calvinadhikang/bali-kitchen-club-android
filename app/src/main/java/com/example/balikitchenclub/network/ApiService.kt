@@ -3,6 +3,8 @@ package com.example.balikitchenclub.network
 import com.example.balikitchenclub.network.dro.AuthDro
 import com.example.balikitchenclub.network.dro.BasicResponse
 import com.example.balikitchenclub.network.dro.EmployeeResponseItem
+import com.example.balikitchenclub.network.dro.MenuResponse
+import com.example.balikitchenclub.network.dro.MenuResponseDetail
 import com.example.balikitchenclub.network.dro.MenuResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseTransaction
 import com.example.balikitchenclub.network.dro.SesiResponseItem
@@ -31,7 +33,7 @@ interface ApiService {
     ): Response<AuthDro>
 
     @GET("menu")
-    suspend fun getAllMenus(): Response<List<MenuResponseItem>>
+    suspend fun getAllMenus(): Response<MenuResponse>
 
     @GET("menu/transaction")
     suspend fun getAllMenuTransaction(): Response<List<MenuResponseTransaction>>
@@ -44,13 +46,13 @@ interface ApiService {
     @GET("menu/{id}")
     suspend fun getDetailMenu(
         @Path("id") id: Int
-    ): Response<MenuResponseItem>
+    ): Response<MenuResponseDetail>
 
     @PATCH("menu/{id}")
     suspend fun updateMenu(
         @Path("id") id: Int,
         @Body() updateMenuDto: UpdateMenuDto
-    ): Response<MenuResponseItem>
+    ): Response<MenuResponseDetail>
 
     @GET("sesi")
     suspend fun getAllSesi(): Response<List<SesiResponseItem>>

@@ -3,21 +3,29 @@ package com.example.balikitchenclub.network.dro
 import com.google.gson.annotations.SerializedName
 
 data class MenuResponseItem(
-
-	@field:SerializedName("price")
-	val price: Int,
-
-	@field:SerializedName("name")
-	val name: String,
-
-	@field:SerializedName("id")
 	val id: Int,
-
-	@field:SerializedName("stock")
+	val name: String,
+	val description: String,
+	val price: Int,
 	val stock: Int,
+	val image: String?,
+	val category: MenuCategory
+)
 
-	@field:SerializedName("category")
-	val category: String
+data class MenuCategory (
+	val name: String
+)
+
+data class MenuResponse(
+	val error: Boolean,
+	val message: String,
+	val data: List<MenuResponseItem>
+)
+
+data class MenuResponseDetail (
+	val error: Boolean,
+	val message: String,
+	val data: MenuResponseItem
 )
 
 data class MenuResponseTransaction(
