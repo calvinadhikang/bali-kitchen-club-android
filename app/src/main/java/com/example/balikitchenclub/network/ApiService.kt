@@ -2,10 +2,10 @@ package com.example.balikitchenclub.network
 
 import com.example.balikitchenclub.network.dro.AuthDro
 import com.example.balikitchenclub.network.dro.BasicResponse
-import com.example.balikitchenclub.network.dro.EmployeeResponseItem
+import com.example.balikitchenclub.network.dro.EmployeeResponse
+import com.example.balikitchenclub.network.dro.EmployeeResponseList
 import com.example.balikitchenclub.network.dro.MenuResponse
 import com.example.balikitchenclub.network.dro.MenuResponseDetail
-import com.example.balikitchenclub.network.dro.MenuResponseItem
 import com.example.balikitchenclub.network.dro.MenuResponseTransaction
 import com.example.balikitchenclub.network.dro.SesiResponseItem
 import com.example.balikitchenclub.network.dro.StockDro
@@ -76,13 +76,13 @@ interface ApiService {
         @Body() createSesiDto: CreateSesiDto
     ): Response<BasicResponse>
 
-    @GET("user/staffs")
-    suspend fun getAllStaffs(): Response<List<EmployeeResponseItem>>
+    @GET("staff")
+    suspend fun getAllStaffs(): Response<EmployeeResponseList>
 
-    @POST("user/register")
-    suspend fun registerUser(
+    @POST("staff/add")
+    suspend fun addStaff(
         @Body createEmployeeDto: CreateEmployeeDto
-    ): Response<EmployeeResponseItem>
+    ): Response<EmployeeResponse>
 
     @POST("transaction/add")
     suspend fun createTransaction(

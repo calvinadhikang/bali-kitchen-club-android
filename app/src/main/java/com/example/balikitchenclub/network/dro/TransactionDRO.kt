@@ -18,7 +18,7 @@ data class TransactionResponseItem(
     var status: String,
     val createdAt: String,
     val details: List<DetailTransactionResponseItem>,
-    val employee_detail: EmployeeResponseItem
+    val employee_detail: Employee
 )
 
 data class DetailTransactionResponseItem(
