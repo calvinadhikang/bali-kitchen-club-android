@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -48,7 +49,8 @@ fun AddMenuScreen(
 ){
     val context = LocalContext.current
     var name by rememberSaveable { mutableStateOf("") }
-    var price by rememberSaveable { mutableStateOf(0) }
+    var price by rememberSaveable { mutableIntStateOf(0) }
+    val isLoading by viewModel.isLoading.observeAsState(false)
 
     ColumnWraper {
         Text("Tambah Menu", modifier = Modifier.padding(bottom = 16.dp), style = MaterialTheme.typography.titleSmall)
@@ -62,12 +64,12 @@ fun AddMenuScreen(
                 onClick = {
                     viewModel.createMenu(name, price, context)
                 },
-                enabled = name != "" && price > 0 && !viewModel.isLoading,
+                enabled = name != "" && price > 0 && !isLoading,
                 modifier = Modifier.padding(top = 8.dp)
             ) {
                 Text("Tambah")
             }
-            if (viewModel.isLoading) {
+            if (isLoading) {
                 CircularProgressIndicator()
             }
         }

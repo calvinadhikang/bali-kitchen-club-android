@@ -28,66 +28,65 @@ class MenuScreenViewModel : ViewModel(){
     var detailName by mutableStateOf("")
     var detailPrice by mutableStateOf(0)
     var detailStock by mutableStateOf(0)
-    var isLoading by mutableStateOf(false)
 
-    var data: MutableStateFlow<List<MenuResponseItem>> = MutableStateFlow(mutableStateListOf())
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
-    fun getAllMenus(){
-        try {
-            isLoading = true
-            viewModelScope.launch {
+    private val _detailLoading = MutableLiveData<Boolean>()
+    val detailLoading: LiveData<Boolean> = _detailLoading
+
+    private val _menus = MutableLiveData<List<MenuResponseItem>>()
+    val menus: LiveData<List<MenuResponseItem>> = _menus
+
+    fun getAllMenus() {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true  // Set loading state to true
                 val api = ApiClient.apiService
-                val response = withContext(Dispatchers.IO) {
-                    api.getAllMenus()
-                }
+                val response = api.getAllMenus()
 
                 if (response.isSuccessful) {
                     val res = response.body()
                     if (res?.data != null) {
-                        data.value = res.data
+                        _menus.value = res.data
                     }
                 } else {
                     Log.e("DATA_FAILED", "error: ${response.code()}")
                 }
+            } catch (e: Exception) {
+                Log.e("EXCEPTION", e.message.toString())
+            } finally {
+                _isLoading.value = false  // Set loading state to false
             }
-        } catch (e: Exception) {
-            Log.e("EXCEPTION", e.message.toString())
-        }
-        finally {
-            isLoading = false
         }
     }
 
     fun createMenu(menuName: String, menuPrice: Int, context: Context){
-        try {
-            isLoading = true
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
                 val api = ApiClient.apiService
-                val response = withContext(Dispatchers.IO){
-                    api.createMenu(CreateMenuDto(menuName, menuPrice, 2))
-                }
+                val response = api.createMenu(CreateMenuDto(menuName, menuPrice, 2))
 
                 if (response.isSuccessful){
                     withContext(Dispatchers.Main){
                         Toast.makeText(context, "Berhasil Tambah Menu", Toast.LENGTH_SHORT).show()
                     }
                 }
+            } catch (ex: Exception) {
+                Log.e("ERROR", ex.message.toString())
+            } finally {
+                _isLoading.value = false
             }
-        } catch (ex: Exception) {
-            Log.e("ERROR", ex.message.toString())
-        } finally {
-            isLoading = false
         }
     }
 
     fun getDetailMenu(id: Int){
-        try {
-            isLoading = true
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
                 val api = ApiClient.apiService
-                val response = withContext(Dispatchers.IO){
-                    api.getDetailMenu(id)
-                }
+                val response = api.getDetailMenu(id)
 
                 if (response.isSuccessful) {
                     val result = response.body()!!.data
@@ -95,33 +94,30 @@ class MenuScreenViewModel : ViewModel(){
                     detailName = result.name
                     detailStock = result.stock
                 }
+            } catch (ex: Exception) {
+                Log.e("ERROR", ex.message.toString())
+            } finally {
+                _isLoading.value = false
             }
-        } catch (ex: Exception) {
-            Log.e("ERROR", ex.message.toString())
-        } finally {
-            isLoading = false
         }
     }
 
     fun updateMenu(id: Int, context: Context){
-        try {
-            isLoading = true
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
                 val api = ApiClient.apiService
                 val updateDto = UpdateMenuDto(detailName, detailPrice)
-
-                val response = withContext(Dispatchers.IO){
-                    api.updateMenu(id, updateDto)
-                }
+                val response = api.updateMenu(id, updateDto)
 
                 if (response.isSuccessful){
                     Toast.makeText(context, "Berhasil Update Menu", Toast.LENGTH_SHORT).show()
                 }
+            } catch (ex: Exception) {
+                Log.e("ERROR", ex.message.toString())
+            } finally {
+                _isLoading.value = false
             }
-        } catch (ex: Exception) {
-            Log.e("ERROR", ex.message.toString())
-        } finally {
-            isLoading = false
         }
     }
 }

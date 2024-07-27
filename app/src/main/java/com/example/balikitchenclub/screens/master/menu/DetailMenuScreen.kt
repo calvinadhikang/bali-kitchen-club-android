@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
@@ -54,6 +55,7 @@ fun DetailMenuScreen(
     id: String?,
 ){
     val context = LocalContext.current
+    val isLoading by viewModel.isLoading.observeAsState(true)
 
     LaunchedEffect(Unit){
         if (!id.isNullOrEmpty()){
@@ -64,25 +66,36 @@ fun DetailMenuScreen(
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ){
-        if (viewModel.isLoading && viewModel.detailName == "") {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            ColumnWraper {
+        ColumnWraper {
+            if (isLoading) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentSize(Alignment.Center)) {
+                    CircularProgressIndicator()
+                }
+            }else{
                 Text("Detail Menu", modifier = Modifier.padding(bottom = 16.dp), style = MaterialTheme.typography.titleSmall)
                 OutlinedTextField(value = viewModel.detailName, onValueChange = { newValue -> viewModel.detailName = newValue }, label = { Text("Nama") }, modifier = Modifier.fillMaxWidth())
                 OutlinedTextField(value = viewModel.detailPrice.toString(), onValueChange = { newValue -> viewModel.detailPrice = checkDigitInput(newValue) }, label = { Text("Price") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())
                 OutlinedTextField(value = viewModel.detailStock.toString(), readOnly = true, onValueChange = {}, label = { Text("Stock") }, modifier = Modifier.fillMaxWidth())
-                Button(onClick = { viewModel.updateMenu(id!!.toInt(), context) }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
-                    Text("Update")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+                    Button(
+                        onClick = {
+                            viewModel.updateMenu(id!!.toInt(), context)
+                        },
+                    ) {
+                        Text("Update")
+                    }
                 }
             }
-            ColumnWraper {
-                StockMutationList(menuId = id!!.toInt(), onClick = { viewModel.getDetailMenu(id.toInt()) })
-            }
+        }
+        ColumnWraper {
+            StockMutationList(menuId = id!!.toInt(), onClick = { viewModel.getDetailMenu(id.toInt()) })
         }
     }
 }
