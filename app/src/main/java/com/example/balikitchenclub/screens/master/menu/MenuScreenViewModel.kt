@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -16,6 +17,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.balikitchenclub.network.ApiClient
 import com.example.balikitchenclub.network.dro.MenuResponseItem
 import com.example.balikitchenclub.network.dto.CreateMenuDto
+import com.example.balikitchenclub.network.dto.CreateStockDto
 import com.example.balikitchenclub.network.dto.UpdateMenuDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,11 +25,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MenuScreenViewModel : ViewModel(){
+class MenuScreenViewModel : ViewModel() {
 
     var detailName by mutableStateOf("")
-    var detailPrice by mutableStateOf(0)
-    var detailStock by mutableStateOf(0)
+    var detailPrice by mutableIntStateOf(0)
+    var detailStock by mutableIntStateOf(0)
+    var stockInput by mutableIntStateOf(0)
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -61,15 +64,15 @@ class MenuScreenViewModel : ViewModel(){
         }
     }
 
-    fun createMenu(menuName: String, menuPrice: Int, context: Context){
+    fun createMenu(menuName: String, menuPrice: Int, context: Context) {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
                 val api = ApiClient.apiService
                 val response = api.createMenu(CreateMenuDto(menuName, menuPrice, 2))
 
-                if (response.isSuccessful){
-                    withContext(Dispatchers.Main){
+                if (response.isSuccessful) {
+                    withContext(Dispatchers.Main) {
                         Toast.makeText(context, "Berhasil Tambah Menu", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -81,7 +84,7 @@ class MenuScreenViewModel : ViewModel(){
         }
     }
 
-    fun getDetailMenu(id: Int){
+    fun getDetailMenu(id: Int) {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
@@ -102,7 +105,7 @@ class MenuScreenViewModel : ViewModel(){
         }
     }
 
-    fun updateMenu(id: Int, context: Context){
+    fun updateMenu(id: Int, context: Context) {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
@@ -110,7 +113,7 @@ class MenuScreenViewModel : ViewModel(){
                 val updateDto = UpdateMenuDto(detailName, detailPrice)
                 val response = api.updateMenu(id, updateDto)
 
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     Toast.makeText(context, "Berhasil Update Menu", Toast.LENGTH_SHORT).show()
                 }
             } catch (ex: Exception) {
@@ -118,6 +121,29 @@ class MenuScreenViewModel : ViewModel(){
             } finally {
                 _isLoading.value = false
             }
+        }
+    }
+
+    fun addStock(id: Int, userId: Int) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+
+                val api = ApiClient.apiService
+                val createStockDto = CreateStockDto(stockInput, userId)
+                val response = api.addMenuStock(id, createStockDto)
+
+                if (response.isSuccessful) {
+                    getDetailMenu(id)
+                    detailStock += stockInput
+                    stockInput = 0
+                }
+            } catch (e: Exception) {
+                Log.e("ERROR", e.message.toString())
+            } finally {
+                _isLoading.value = false
+            }
+
         }
     }
 }

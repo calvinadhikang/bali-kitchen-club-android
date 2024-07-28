@@ -18,9 +18,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,7 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.balikitchenclub.components.ColumnWraper
-import com.example.balikitchenclub.components.StockMutationList
+import com.example.balikitchenclub.utils.UserPreferences
 import com.example.balikitchenclub.utils.checkDigitInput
 
 @Composable
@@ -56,6 +58,7 @@ fun DetailMenuScreen(
 ){
     val context = LocalContext.current
     val isLoading by viewModel.isLoading.observeAsState(true)
+    val user = UserPreferences(context).getUser()
 
     LaunchedEffect(Unit){
         if (!id.isNullOrEmpty()){
@@ -95,7 +98,31 @@ fun DetailMenuScreen(
             }
         }
         ColumnWraper {
-            StockMutationList(menuId = id!!.toInt(), onClick = { viewModel.getDetailMenu(id.toInt()) })
+            Text("Tambah Stock:", fontWeight = FontWeight.SemiBold)
+            OutlinedTextField(value = "${viewModel.stockInput}", onValueChange = { newValue -> viewModel.stockInput = checkDigitInput(newValue) }, label = { Text("Tambah Stock Sebanyak") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth())
+            Button(onClick = { viewModel.addStock(id!!.toInt(), user!!.id) }, modifier = Modifier.padding(top = 8.dp)) {
+                Text(text = "Tambah")
+            }
+            Spacer(Modifier.padding(top = 12.dp))
+            Text("Mutasi Stock:", fontWeight = FontWeight.SemiBold)
+            LazyColumn(){
+//        items(items = emptyList<Int>(), key = {it -> it.id}){stock ->
+//            Column(
+//                Modifier
+//                    .background(if (stock.status == "Masuk") LightGreen else LightRed, shape = RoundedCornerShape(8.dp))
+//                    .padding(8.dp)
+//            ){
+//                Text(stock.status, fontWeight = FontWeight.SemiBold)
+//                Row(
+//                    Modifier.fillMaxWidth()
+//                ){
+//                    Text(stock.type, Modifier.weight(1F))
+//                    Text(stock.qty.toString())
+//                }
+//            }
+//            Spacer(Modifier.padding(4.dp))
+//        }
+            }
         }
     }
 }

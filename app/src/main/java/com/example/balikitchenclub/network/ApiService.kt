@@ -54,6 +54,12 @@ interface ApiService {
         @Body() updateMenuDto: UpdateMenuDto
     ): Response<MenuResponseDetail>
 
+    @POST("menu/{id}/stock")
+    suspend fun addMenuStock(
+        @Path("id") id: Int,
+        @Body() addMenuStockDto: CreateStockDto
+    ): Response<BasicResponse>
+
     @GET("sesi")
     suspend fun getAllSesi(): Response<List<SesiResponseItem>>
 
@@ -103,15 +109,5 @@ interface ApiService {
     @PATCH("transaction/{id}")
     suspend fun setTransactionLunas(
         @Path("id") id: Int
-    ): Response<BasicResponse>
-
-    @GET("stock/{id}")
-    suspend fun getStockMutationByMenuId(
-        @Path("id") id: Int
-    ): Response<List<StockDro>>
-
-    @POST("stock/add")
-    suspend fun addStockByMenuId(
-        @Body createStockDto: CreateStockDto
     ): Response<BasicResponse>
 }
